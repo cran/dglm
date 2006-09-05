@@ -1,7 +1,7 @@
 \name{dglm}
 \alias{dglm}
 \alias{dglm.constant}
-\title{Double generalized linear models}
+\title{DOUBLE GENERALIZED LINEAR MODELS}
 \description{Fits a generalized linear model with a link-linear model for the dispersion as well as for the mean.}
 \usage{
 dglm(formula=formula(data), dformula = ~ 1, family = gaussian, dlink = "log", 
@@ -73,10 +73,6 @@ dispersion model is returned.}
 
 \item{y}{numeric response vector}
 }
-\value{an object of class \code{dglm} is returned, 
-which inherits from \code{glm} and \code{lm}. 
-See \code{\link{dglm.object}} for details.}
-}
 \details{
 Write \eqn{\mu_i = \mbox{E}[y_i]}{m_i = E(y_i)} for the expectation of the 
 \eqn{i}{i}th response. 
@@ -126,7 +122,10 @@ The results will therefore be close to exact ML or REML when the dispersions
 are small compared to the means. In all cases the dispersion submodel as prior
 weights 1, and has its own dispersion parameter which is 2.
 }
-\author{Gordon Smyth, ported to \R\ by Peter Dunn (\email{dunn@usq.edu.au})}
+\value{an object of class \code{dglm} is returned, 
+which inherits from \code{glm} and \code{lm}. 
+See \code{\link{dglm.object}} for details.}
+}
 
 \references{
 Smyth, G. K. (1989). Generalized linear models with varying dispersion. 
@@ -140,12 +139,13 @@ Verbyla, A. P., and Smyth, G. K. (1998). Double generalized linear models:
 approximate residual maximum likelihood and diagnostics. 
 Research Report, Department of Statistics, University of Adelaide. 
 }
+\author{Gordon Smyth, ported to \R\ by Peter Dunn (\email{dunn@usq.edu.au})}
 
 \seealso{\code{\link{dglm.object}}, \code{\link{dglm.control}}, 
 \code{Digamma family}, \code{Polygamma}}
 
 
-\warning{
+\note{
 The anova method is questionable when applied to an \code{dglm} object with
 \code{method="reml"} (stick to \code{method="ml"}). 
 }

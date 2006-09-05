@@ -233,7 +233,6 @@ dglm <- function(formula = formula(data),
 	maxit <- control$maxit
 	trace <- control$trace
 	iter <- 0
-
 	while ( abs(m2loglikold-m2loglik)/(abs(m2loglikold)+1) > epsilon && iter < maxit )
 	{
 ################################
@@ -250,8 +249,8 @@ dglm <- function(formula = formula(data),
 			fdot <- hdot
 		}
 		wd <- 1 / (fdot^2 * u)	# ie Smyth, p 50.  We don't include the factor of 2,
-										# as that is the disp. parameter, which enters via
-										# the  dispersion=2  argument for the summary.
+					# as that is the disp. parameter, which enters via
+					# the  dispersion=2  argument for the summary.
 
 		if(reml) {
 			h <- hat(mfit$qr)
@@ -391,6 +390,7 @@ dglm.constant <- function(y,family,weights=1)
 #  Constant term appearing in glm log-likelihood
 #  Used by dglm
 #  GKS  6 Jan 98, 4 Jul 98, 23 Sep 99.
+# "Binomial" chanegd to "binomial": PKD 05 Sep 2006
 #
 #  Exact cases (in binomial case, exact for phi near 1)
 #
@@ -409,7 +409,7 @@ dglm.constant <- function(y,family,weights=1)
 			2*sum(y-y*ifelse(y>0,log(y),0)+lgamma(y+1)),
 			2*sum(log(y)),
 			sum(log(2*pi*y^3)) ),
-		"Binomial" = -2*sum(lgamma(weights+1)-lgamma(weights*y+1)-
+		"binomial" = -2*sum(lgamma(weights+1)-lgamma(weights*y+1)-
 		lgamma(weights*(1-y)+1)+weights*(y*ifelse(y>0,log(y),0)+
 		(1-y)*ifelse(1-y>0,log(1-y),0)))+sum(log(weights))
 	)

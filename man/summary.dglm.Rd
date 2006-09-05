@@ -80,7 +80,7 @@ Research Report, Department of Statistics, University of Adelaide.
 \code{\link{summary.glm}} }
 
 
-\warning{
+\note{
 The anova method is questionable when applied to an \code{dglm} object with
 \code{method="reml"} (stick to \code{method="ml"}). 
 }

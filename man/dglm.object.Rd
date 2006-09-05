@@ -116,7 +116,7 @@ Research Report, Department of Statistics, University of Adelaide.
 \seealso{\code{\link{dglm.object}}, \code{Digamma family}, \code{Polygamma}}
 
 
-\warning{
+\note{
 The anova method is questionable when applied to an \code{dglm} object with
 \code{method="reml"} (stick to \code{method="ml"}). 
 }
