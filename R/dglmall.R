@@ -9,6 +9,7 @@ dglm <- function(formula = formula(data),
       method = "ml",
       mustart = NULL,
       betastart = NULL,
+      etastart = NULL,
       phistart = NULL,
       control = dglm.control(...),
       ykeep = TRUE,
@@ -170,7 +171,6 @@ dglm <- function(formula = formula(data),
 #
 #  Starting values.  If explicit starting values are not supplied,
 #  regress link(y) on X and dlink(d) on Z by ordinary least squares.
-# 
 
    if ( is.null(mustart) ) { 
       etastart <- NULL

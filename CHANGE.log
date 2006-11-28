@@ -1,0 +1,25 @@
+1.3:  2006/11/28
+  
+  Obviously didn't fix the 1.2 error; hopefully now fixed.
+  This was acomplished by adding a new input, etastart=NULL.
+
+  
+
+1.2: 2006/09/25
+
+   Fixed an error identified by Sonja Kuhnt for Gaussian models:
+   Error in eval(expr, envir, enclos) : object "etastart" not found
+
+   
+
+v1.1: 
+
+   Fixed an error identified by Cristiano Amancio for binomial data:
+
+   Error in while (abs(m2loglikold - m2loglik)/(abs(m2loglikold) + 1) > epsilon &&  :
+           absent value where TRUE/FALSE necessary
+
+   Futhermore: Warning message:
+   NaNs produced in: log(x) ".
+
+

@@ -6,7 +6,7 @@
 \usage{
 dglm(formula=formula(data), dformula = ~ 1, family = gaussian, dlink = "log", 
 data = sys.parent(), subset = NULL, weights = NULL, contrasts = NULL, 
-method = "ml", mustart = NULL, betastart = NULL, phistart = NULL, 
+method = "ml", mustart = NULL, betastart = NULL, etastart = NULL, phistart = NULL, 
 control = dglm.control(...), ykeep = TRUE, xkeep = FALSE, zkeep = FALSE, ...)
 
 dglm.constant(y,family,weights=1)
@@ -53,6 +53,9 @@ Ignored if \code{betastart} is supplied.}
 
 \item{betastart}{numeric vector giving starting values for the 
 regression coefficients in the link-linear model for the mean.}
+
+\item{etastart}{numeric vector giving starting values for the 
+linear predictor for the mean model.}
 
 \item{phistart}{numeric vector giving starting values for the dispersion
 parameters.}
