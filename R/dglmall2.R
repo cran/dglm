@@ -15,6 +15,7 @@ dglm <- function(formula = formula(data),
       ykeep = TRUE,
       xkeep = FALSE,
       zkeep = FALSE,
+      verbose=FALSE,
       ...)
 #
 #   Double generalized linear models
@@ -114,9 +115,9 @@ dglm <- function(formula = formula(data),
       if(is.call(name.dlink))  # power link
          name.dlink <- deparse(name.dlink)
    }
-   cat(">>>>>>>>dlink=",dlink,"\n")
-   if(!is.null(name.dlink))   name.dlink <- name.dlink
+#   if(!is.null(dlink$name))   name.dlink <- dlink$name ### WHAT DOES THIS DO??
 #
+   if ( verbose ) cat("dlink =",dlink,"\n")
 #   Construct the dispersion variance function
    if ( family$family=="Tweedie") {
       tweedie.p <- call$family$var.power
@@ -239,9 +240,9 @@ dglm <- function(formula = formula(data),
         while ( abs(m2loglikold-m2loglik)/(abs(m2loglikold)+1) > epsilon && iter < maxit )
    {
 ################################
+	if ( verbose ) cat("Iteration",iter+1,":\n")
 #      dispersion submodel
       hdot <- 1/dfamily$mu.eta( deta )
-      
       if(Digamma) {
          delta <- 2*weights*( log(weights/phi) - digamma(weights/phi) )
          u <- 2*weights^2*( trigamma(weights/phi) - phi/weights)
@@ -260,6 +261,7 @@ dglm <- function(formula = formula(data),
          delta <- delta - phi*h
          wd <- wd - 2*(h/hdot^2/phi^2) + h^2
       }
+      
       if(any(wd<0)) {
          wd[wd<0] <- 0
       }
@@ -269,6 +271,7 @@ dglm <- function(formula = formula(data),
       deta <- dfit$fitted.values
    
       phi <- dfamily$linkinv(deta+doffset)
+      if ( verbose ) cat(" Dispersion sub-model done\n")
 
 ################################
 #      mean submodel
@@ -303,6 +306,7 @@ dglm <- function(formula = formula(data),
 #  linear.predictors and prior.weights are new components, and fitted.values
 #  has a new definition.
 #
+   if ( verbose ) cat("Model fitted\n")
    mfit$formula <- call$formula
    mfit$call <- call
    mfit$family <- family
@@ -340,8 +344,22 @@ dglm <- function(formula = formula(data),
    dfit$call <- call
    dfit$residuals <- dfamily$dev.resid(d, phi, wt=rep(1/2,N) )
    dfit$deviance <- sum( dfit$residuals  )
+if ( verbose ) {
+	cat("Hmm2?\n")
+	print(doffset) 	
+	print(dfamily)
+	cat("y=",y,"\n")
+	cat("x=",Z,"\n")
+	cat("fitted values:",dfit$fitted.values,"\n")
+	cat("deviance:",dfit$deviance,"\n")
+	cat("residuals:",dfit$residuals,"\n")
+	cat("d=",d,"\n")
+}
    dfit$null.deviance <- glm.fit(x=Z, y=d, weights=rep(1/2,N), offset=doffset, family=dfamily)
+
+if ( verbose ) cat("Hmm2?\n")
    if(length(dfit$null.deviance)>1) dfit$null.deviance <- dfit$null.deviance$null.deviance
+if ( verbose ) cat("Hmm2?\n")
    if(ykeep) dfit$y <- d
    if(zkeep) dfit$z <- Z
    dfit$formula <- as.vector(attr(dterms, "formula"))
