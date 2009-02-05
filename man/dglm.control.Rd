@@ -9,8 +9,7 @@ Typically only used when calling \code{dglm}.}
 \arguments{
 \item{epsilon}{positive convergence tolerance epsilon; the iterations
    converge when 
-   \eqn{(|L_o - L|)/(|L_o| + 1) > \epsilon}
-       {abs(L.old-L)/(abs(L.old)+1) > epsilon},
+   \eqn{(|L_o - L|)/(|L_o| + 1) > \epsilon}{abs(L.old-L)/(abs(L.old)+1) > epsilon},
    where \eqn{L_o}{L.old} is minus twice the values of log-likelihood
    on the previous iteration, and
    \eqn{L}{L} is minus twice the values of log-likelihood
@@ -29,8 +28,8 @@ When 'trace' is true, calls to 'cat' produce the output for each
 outer iteration. Hence, 'options(digits = *)' can be used to
 increase the precision; see the example for \code{\link{glm.control}}.}
 
-\author{Gordon Smyth (\email{smyth@wehi.edu.au}),
-ported to \R\ by Peter Dunn (\email{dunn@usq.edu.au})
+\author{Gordon Smyth,
+ported to \R\ by Peter Dunn (\email{pdunn2@usc.edu.au})
 }
 \references{
 Smyth, G. K. (1989). Generalized linear models with varying dispersion. 

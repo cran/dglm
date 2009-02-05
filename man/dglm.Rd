@@ -7,7 +7,7 @@
 dglm(formula=formula(data), dformula = ~ 1, family = gaussian, dlink = "log", 
 data = sys.parent(), subset = NULL, weights = NULL, contrasts = NULL, 
 method = "ml", mustart = NULL, betastart = NULL, etastart = NULL, phistart = NULL, 
-control = dglm.control(...), ykeep = TRUE, xkeep = FALSE, zkeep = FALSE, verbose=FALSE, ...)
+control = dglm.control(...), ykeep = TRUE, xkeep = FALSE, zkeep = FALSE, ...)
 
 dglm.constant(y,family,weights=1)
 }
@@ -71,8 +71,6 @@ dglm.constant(y,family,weights=1)
 
    \item{zkeep}{logical flag: if \code{TRUE}, the \code{model.matrix} for the
    dispersion model is returned.}
-
-   \item{verbose}{logical flag: if \code{TRUE}, extra information is printed during the call to \code{dglm}; \code{FALSE} is the default.}
 
    \item{...}{further arguments passed to or from other methods.}
 
@@ -146,7 +144,8 @@ Verbyla, A. P., and Smyth, G. K. (1998). Double generalized linear models:
 approximate residual maximum likelihood and diagnostics. 
 Research Report, Department of Statistics, University of Adelaide. 
 }
-\author{Gordon Smyth, ported to \R\ by Peter Dunn (\email{dunn@usq.edu.au})}
+\author{Gordon Smyth, 
+ported to \R\ by Peter Dunn (\email{pdunn2@usc.edu.au})}
 
 \seealso{\code{\link{dglm.object}}, \code{\link{dglm.control}}, 
 \code{Digamma family}, \code{Polygamma}}
@@ -167,6 +166,7 @@ clotting <- data.frame(
       lot2 = c(69,35,26,21,18,16,13,12,12))
          
 # The same example as in  glm: the dispersion is modelled as constant
+# However, dglm used ml not reml, so results slightly different:
 out <- dglm(lot1 ~ log(u), ~1, data=clotting, family=Gamma)
 summary(out)
 

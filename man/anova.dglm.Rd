@@ -36,7 +36,7 @@
 }
 
 \author{Gordon Smyth,
-ported to \R\ by Peter Dunn (\email{dunn@usq.edu.au})}
+ported to \R\ by Peter Dunn (\email{pdunn2@usc.edu.au})}
 
 \references{
   Hastie, T. J. and Pregibon, D. (1992)

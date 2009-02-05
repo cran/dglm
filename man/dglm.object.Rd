@@ -32,19 +32,24 @@
     A \code{dglm} object consists of a \code{glm} object with the following
 	 additional components:
 	 
-	 \item{dispersion.fit}{the dispersion submodel: a \code{glm} object 
-	 representing the fitted model for the dispersions. 
-	 The responses for this model are the deviance components from the original
-	 generalized linear model. 
-	 The prior weights are 1 and the dispersion or scale of this model is 2.}
-    \item{iter}{this component now represents the number of outer iterations 
-	 used to fit the coupled mean-dispersion models. 
-	 At each outer iteration, one IRLS is done for each of the mean and dispersion
-	 submodels.}
-    \item{method}{fitting method used: \code{"ml"} if maximum likelihood 
-	 was used or \code{"reml"} if adjusted profile likelihood was used.}
-	 \item{m2loglik}{minus twice the log-likelihood or 
-	 adjusted profile likelihood of the fitted model.}
+	 \itemize{
+		\item{dispersion.fit}{the dispersion submodel: a \code{glm} object 
+		representing the fitted model for the dispersions. 
+		The responses for this model are the deviance components from the original
+		generalized linear model. 
+		The prior weights are 1 and the dispersion or scale of this model is 2.}
+		
+		\item{iter}{this component now represents the number of outer iterations 
+		used to fit the coupled mean-dispersion models. 
+		At each outer iteration, one IRLS is done for each of the mean and dispersion
+		submodels.}
+		
+		\item{method}{fitting method used: \code{"ml"} if maximum likelihood 
+		was used or \code{"reml"} if adjusted profile likelihood was used.}
+		
+		\item{m2loglik}{minus twice the log-likelihood or 
+		adjusted profile likelihood of the fitted model.}
+	}
 }
 	 
 	 
@@ -97,8 +102,8 @@ The results will therefore be close to exact ML or REML when the dispersions
 are small compared to the means. In all cases the dispersion submodel as prior
 weights 1, and has its own dispersion parameter which is 2.
 }
-\author{Gordon Smyth (\email{smyth@wehi.edu.au}),
-ported to \R\ by Peter Dunn (\email{dunn@usq.edu.au})}
+\author{Gordon Smyth,
+ported to \R\ by Peter Dunn (\email{pdunn2@usc.edu.au})}
 
 \references{
 Smyth, G. K. (1989). Generalized linear models with varying dispersion. 

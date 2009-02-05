@@ -53,7 +53,7 @@ dglm <- function(formula = formula(data),
    cnames <- cnames[match(mnames,cnames,0)]
    mcall <- call[cnames]
    mcall[[1]] <- as.name("model.frame")
-   mframe <- eval(mcall, sys.parent())
+   mframe <<- eval(mcall, sys.parent())  ### NEEDS THE <<- ###################################################
    mf <- match.call(expand.dots=FALSE)
 
 #   Now extract the glm components
@@ -94,10 +94,11 @@ dglm <- function(formula = formula(data),
    mcall$formula <- formula
    mcall$formula[3] <- switch(match(length(dformula),c(0,2,3)),
       1,dformula[2],dformula[3])
-#
+
 #   Evaluate the model frame and extract components
-   mframe <<- eval(mcall, sys.parent())
+   mframe <- eval(mcall, sys.parent())
    dterms <- attr(mframe, "terms")
+   
    Z <- model.matrix(dterms, mframe, contrasts)
    doffset <- model.extract(mframe, offset)
    if ( is.null(doffset) ) doffset <- rep(0, N )
@@ -114,7 +115,6 @@ dglm <- function(formula = formula(data),
       if(is.call(name.dlink))  # power link
          name.dlink <- deparse(name.dlink)
    }
-   cat(">>>>>>>>dlink=",dlink,"\n")
    if(!is.null(name.dlink))   name.dlink <- name.dlink
 #
 #   Construct the dispersion variance function
@@ -264,7 +264,8 @@ dglm <- function(formula = formula(data),
          wd[wd<0] <- 0
       }
       zd <- deta + (d - delta) * fdot
-
+		
+		# Now fit dispersion submodel, with response zd, explanatory vars Z,weights wd
       dfit <- lm.wfit(Z, zd, wd, method="qr", singular.ok=TRUE)
       deta <- dfit$fitted.values
    

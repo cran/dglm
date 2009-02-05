@@ -59,8 +59,8 @@
   is specified, the first in the list will be used.
 }
 
-\author{Gordon Smyth (\email{smyth@wehi.edu.au}),
-ported to \R\ by Peter Dunn (\email{dunn@usq.edu.au})}
+\author{Gordon Smyth,
+ported to \R\ by Peter Dunn (\email{pdunn2@usc.edu.au})}
 
 \references{
 Smyth, G. K. (1989). Generalized linear models with varying dispersion. 
