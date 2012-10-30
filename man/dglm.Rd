@@ -1,7 +1,7 @@
 \name{dglm}
 \alias{dglm}
 \alias{dglm.constant}
-\title{DOUBLE GENERALIZED LINEAR MODELS}
+\title{Double generalised linear models}
 \description{Fits a generalized linear model with a link-linear model for the dispersion as well as for the mean.}
 \usage{
 dglm(formula=formula(data), dformula = ~ 1, family = gaussian, dlink = "log", 
@@ -166,7 +166,7 @@ clotting <- data.frame(
       lot2 = c(69,35,26,21,18,16,13,12,12))
          
 # The same example as in  glm: the dispersion is modelled as constant
-# However, dglm used ml not reml, so results slightly different:
+# However, dglm uses  ml  not  reml,  so the results are slightly different:
 out <- dglm(lot1 ~ log(u), ~1, data=clotting, family=Gamma)
 summary(out)
 

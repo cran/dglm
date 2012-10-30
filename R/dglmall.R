@@ -15,7 +15,7 @@ dglm <- function(formula = formula(data),
       ykeep = TRUE,
       xkeep = FALSE,
       zkeep = FALSE,
-      ...)
+      ...) {
 #
 #   Double generalized linear models
 #   Gordon Smyth, Walter and Eliza Hall Institute of Medical Research
@@ -23,7 +23,6 @@ dglm <- function(formula = formula(data),
 #
 #   Ported to R by Peter Dunn, 22 August 2005
 #
-{
 #  Set up mean submodel: 
 #               y   response
 #               X   design matrix
@@ -122,8 +121,8 @@ dglm <- function(formula = formula(data),
       tweedie.p <- call$family$var.power
    }
 
-   Digamma <- family$family=="Gamma" || (family$family=="Tweedie" && tweedie.p==2)
-
+   Digamma <- family$family=="Gamma" || (family$family=="Tweedie" && tweedie.p==2) 
+      # In other words, if the mean glm is a gamma (or, equivalently, Tweedie with p=2), use the digamma explicitly
    if (Digamma) {
 
       linkinv <- make.link(name.dlink)$linkinv
@@ -207,12 +206,17 @@ dglm <- function(formula = formula(data),
        phi <- dfamily$linkinv(deta+offset)
     }
 
-   zm <- eta + (y - mu) / family$mu.eta(eta)
-   wm <- eval(family$variance(mu))*weights/phi
-
-   mfit <- lm.wfit(X,zm,wm,method="qr",singular.ok=TRUE) # ,qr=reml)
+   zm <- as.vector( eta + (y - mu) / family$mu.eta(eta) )
+   wm <- as.vector( eval(family$variance(mu))*weights/phi )
+      # as.vector()  added 30 October 2012
+   mfit <- lm.wfit(X, zm, wm, method="qr", singular.ok=TRUE) # ,qr=reml)
    eta <- mfit$fitted.values
+
    mu <- family$linkinv(eta+offset)
+   if (any(mu<0)) {
+      cat("Some values for  mu  are negative, suggesting an inappropriate model",
+          "Try a different link function.\n")
+   }
    d <- family$dev.resids(y, mu, weights)
 
 #  Initial (minus twice log) likelihood or adjusted profile likelihood
@@ -236,8 +240,8 @@ dglm <- function(formula = formula(data),
    trace <- control$trace
    iter <- 0
    
-        while ( abs(m2loglikold-m2loglik)/(abs(m2loglikold)+1) > epsilon && iter < maxit )
-   {
+   while ( abs(m2loglikold-m2loglik)/(abs(m2loglikold)+1) > epsilon && iter < maxit )  {
+
 ################################
 #      dispersion submodel
       hdot <- 1/dfamily$mu.eta( deta )
@@ -260,26 +264,43 @@ dglm <- function(formula = formula(data),
          delta <- delta - phi*h
          wd <- wd - 2*(h/hdot^2/phi^2) + h^2
       }
+
       if(any(wd<0)) {
+         cat(" Some weights are negative; temporarily fixing.  This may be a sign of an inappropriate model.\n")
          wd[wd<0] <- 0
+      }
+      if(any(is.infinite(wd))) {
+         cat(" Some weights are negative; temporarily fixing.  This may be a sign of an inappropriate model.\n")
+         wd[is.infinite(wd)] <- 100
       }
       zd <- deta + (d - delta) * fdot
 		
-		# Now fit dispersion submodel, with response zd, explanatory vars Z,weights wd
+		# Now fit dispersion submodel, with response zd, explanatory vars Z, weights wd
       dfit <- lm.wfit(Z, zd, wd, method="qr", singular.ok=TRUE)
       deta <- dfit$fitted.values
    
       phi <- dfamily$linkinv(deta+doffset)
+      if (any(is.infinite(phi))) {
+         cat("*** Some values for  phi  are infinite, suggesting an inappropriate model",
+             "Try a different link function.  Making an attempt to continue...\n")
+         phi[is.infinite(phi)] <- 10
+      }
 
 ################################
 #      mean submodel
       zm <- eta + (y - mu) / family$mu.eta(eta)
       fam.wt <- expression( weights * family$variance(mu) ) 
       wm <- eval( fam.wt )/phi
-      mfit <- lm.wfit(X,zm,wm,method="qr",singular.ok=TRUE)
+      mfit <- lm.wfit(X, zm, wm, method="qr", singular.ok=TRUE)
       eta <- mfit$fitted.values
       mu <- family$linkinv(eta+offset)
+      if (any(mu<0)) {
+         cat("*** Some values for  mu  are negative, suggesting an inappropriate model",
+             "Try a different link function.  Making an attempt to continue...\n")
+      mu[mu<=0] <- 1
+      }
       d <- family$dev.resids(y, mu, weights)
+
 
 #      overall likelihood
       m2loglikold <- m2loglik
@@ -296,7 +317,7 @@ dglm <- function(formula = formula(data),
       if(trace)
          cat("DGLM iteration ", iter, ": -2*log-likelihood = ",
          format(round(m2loglik, 4)), " \n", sep = "")
-   }
+   } ### END while LOOP
 
 #
 #  Output for mean model:
@@ -394,7 +415,7 @@ dglm.constant <- function(y,family,weights=1)
 #  Constant term appearing in glm log-likelihood
 #  Used by dglm
 #  GKS  6 Jan 98, 4 Jul 98, 23 Sep 99.
-# "Binomial" chanegd to "binomial": PKD 05 Sep 2006
+# "Binomial" changed to "binomial": PKD 05 Sep 2006
 #
 #  Exact cases (in binomial case, exact for phi near 1)
 #
@@ -402,7 +423,6 @@ dglm.constant <- function(y,family,weights=1)
    if ( family$family=="Tweedie"){ 
       tweedie.p <- get("tweedie.p", envir = parent.frame() )
    }
-   
    const <- switch(family$family[1],
       "Gaussian" = length(y)*log(2*pi),
       "Poisson" = 2*sum(y-y*ifelse(y>0,log(y),0)+lgamma(y+1)),
@@ -425,9 +445,9 @@ dglm.constant <- function(y,family,weights=1)
       if(any(V==0)) V[V==0] <- family$variance(y[V==0]+1/6)
       const <- sum(log(2*pi*V))
       if(length(V)==1 && length(y)>1) const <- length(y)*const
-   }
+   } ### END: if (is.null(const))
    const
-}
+} ### END: dglm.constant()
 
 
 

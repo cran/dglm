@@ -2,9 +2,6 @@
 \alias{dglm.object}
 \title{Double generalized linear model object}
 \description{Class of objects returned by fitting double generalized linear models.}
-\usage{}
-\arguments{}
-\value{}
 
 
 \section{Generation}{

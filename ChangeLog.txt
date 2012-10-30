@@ -1,3 +1,6 @@
+1.7  30 October 2012
+	Minor edits to code and help files.
+
 1.6  15/Dec/2008
 	Fixed a minor error in dglm.control.Rd
 
@@ -12,13 +15,13 @@
 
    
 1.4:
-  Changed four occurences of  F  rather than  FALSE  in
+  Changed four occurrences of  F  rather than  FALSE  in
   print.summary.dglm.
 
 1.3:  2006/11/28
   
   Obviously didn't fix the 1.2 error; hopefully now fixed.
-  This was acomplished by adding a new input, etastart=NULL.
+  This was accomplished by adding a new input, etastart=NULL.
 
   
 
@@ -36,7 +39,7 @@ v1.1:
    Error in while (abs(m2loglikold - m2loglik)/(abs(m2loglikold) + 1) > epsilon &&  :
            absent value where TRUE/FALSE necessary
 
-   Futhermore: Warning message:
+   Furthermore: Warning message:
    NaNs produced in: log(x) ".
 
 

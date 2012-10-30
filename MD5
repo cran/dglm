@@ -1,10 +1,10 @@
-5a4a8c48af8ed29c1de5a8e5c26257cf *ChangeLog.txt
-1b3d5cef7d9cf23a03b37dc99ad7887a *DESCRIPTION
-2427348f6b1677f63a1c49c31b89c04f *NAMESPACE
-89e36c50bd763cda3182d2592a68480b *R/dglmall.R
+e64f730ca6ee6e58467af451addc7a8e *ChangeLog.txt
+9ecb9af5e6d6a702fa60d9344bf83b90 *DESCRIPTION
+0763de45fc205aab74e7975741d3b71f *NAMESPACE
+c07bc0c640b9bed94b44e0606acc1a29 *R/dglmall.R
 a5c0cc81463524617ea5ead5a108ad5f *dglm-tmp.R
 4cfa510a9e7e2884e028f1d4500ae524 *man/anova.dglm.Rd
-ef263fc11469946fcd568847a25047ab *man/dglm.Rd
+466c9f85e3ea7884ffde5ab5e428f0d9 *man/dglm.Rd
 8cc58d13791dd22afd57d61cc59d810a *man/dglm.control.Rd
-79656d0d5736e9a55c7eaf70191e42da *man/dglm.object.Rd
+cf4a4f58b7d85d15a467e40a921c742e *man/dglm.object.Rd
 58d19d4919f1e777e3bcfcc2ed2968f7 *man/summary.dglm.Rd
