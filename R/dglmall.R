@@ -205,6 +205,10 @@ dglm <- function(formula = formula(data),
        if(logdlink) deta <- deta + 1.27036
        phi <- dfamily$linkinv(deta+offset)
     }
+   if (any(phi<=0)) {
+      cat("Some values for  phi  are non-positive, suggesting an inappropriate model",
+          "Try a different link function.\n")
+   }
 
    zm <- as.vector( eta + (y - mu) / family$mu.eta(eta) )
    wm <- as.vector( eval(family$variance(mu))*weights/phi )
@@ -212,10 +216,13 @@ dglm <- function(formula = formula(data),
    mfit <- lm.wfit(X, zm, wm, method="qr", singular.ok=TRUE) # ,qr=reml)
    eta <- mfit$fitted.values
 
+
    mu <- family$linkinv(eta+offset)
-   if (any(mu<0)) {
-      cat("Some values for  mu  are negative, suggesting an inappropriate model",
-          "Try a different link function.\n")
+   if ( family$family=="Tweedie") {
+      if ( (tweedie.p >0) & (any(mu<0)) ) {
+         cat("Some values for  mu  are negative, suggesting an inappropriate model",
+             "Try a different link function.\n")
+      }
    }
    d <- family$dev.resids(y, mu, weights)
 

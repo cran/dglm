@@ -1,12 +1,14 @@
 Package: dglm
-Version: 1.6.2
-Date: 2012-10-30
-Title: Double generalized linear models
+Version: 1.8
+Date: 2012-11-06
+Title: Double Generalized Linear Models
 Author: Peter K Dunn <pdunn2@usc.edu.au> and Gordon K Smyth
 Maintainer: Peter K Dunn <pdunn2@usc.edu.au>
-Depends: R (>= 1.0), statmod(>= 1.0.8)
-Description: Fitting double generalized linear models
+Depends: R (>= 2.8.0), statmod(>= 1.4.20)
+Description: Fitting double  generalized linear models
 License: GPL (>= 2)
-Packaged: 2012-10-30 07:23:12 UTC; pdunn2
+NeedsCompilation: no
+URL: http://www.r-project.org/package=dglm
+Packaged: 2014-11-06 03:34:06 UTC; root
 Repository: CRAN
-Date/Publication: 2012-10-30 07:49:35
+Date/Publication: 2014-11-06 10:37:03
