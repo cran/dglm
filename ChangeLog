@@ -1,6 +1,7 @@
-1.8 06 November 2014
+1.8.1 07 November 2014
    Fixed an error where mu<0 was flagged as an error, even for the Gaussian case.
    The code now checks that the dispersion is greater than zero, the original intent.
+   This was the cause of producing some errors in output seemingly unrelated.
    Thanks for Lars Ronnegaard and Gordon Smyth for identifying this error.
    
 1.7  30 October 2012

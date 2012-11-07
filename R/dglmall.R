@@ -218,9 +218,11 @@ dglm <- function(formula = formula(data),
 
 
    mu <- family$linkinv(eta+offset)
+cat("family:",family$family,"\n")
    if ( family$family=="Tweedie") {
+cat("p:",tweedie.p,"\n")
       if ( (tweedie.p >0) & (any(mu<0)) ) {
-         cat("Some values for  mu  are negative, suggesting an inappropriate model",
+         cat("Some values for  mu  are negative, suggesting an inappropriate model.",
              "Try a different link function.\n")
       }
    }
@@ -301,10 +303,12 @@ dglm <- function(formula = formula(data),
       mfit <- lm.wfit(X, zm, wm, method="qr", singular.ok=TRUE)
       eta <- mfit$fitted.values
       mu <- family$linkinv(eta+offset)
-      if (any(mu<0)) {
-         cat("*** Some values for  mu  are negative, suggesting an inappropriate model",
+      if (family$family=="Tweedie"){
+        if ( (tweedie.p > 0) & (any(mu<0)) ) {
+         cat("*** Some values for  mu  are negative, suggesting an inappropriate model.",
              "Try a different link function.  Making an attempt to continue...\n")
-      mu[mu<=0] <- 1
+          mu[mu<=0] <- 1
+        }
       }
       d <- family$dev.resids(y, mu, weights)
 
