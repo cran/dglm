@@ -35,15 +35,17 @@ dglm <- function(formula = formula(data),
   call <- match.call()
   
   #   Get family for mean model
-  if (is.character(family))
+  if (is.character(family)) {
     family <- get(family, mode = "function", envir = parent.frame())
-  if (is.function(family))
+  }
+  if (is.function(family)) {
     family <- family()
+  }
   if (is.null(family$family)) {
     print(family)
     stop("'family' not recognized")
   }
-  #
+
   #   Evaluate the model frame
   mnames <- c("", "formula", "data", "weights", "subset")
   cnames <- names(call)
@@ -67,8 +69,7 @@ dglm <- function(formula = formula(data),
   X <- model.matrix(mterms, mframe, contrasts)
   
   weights <- model.weights(mframe)
-  if(is.null(weights)) weights <- rep(1,N)
-  if ( is.null(weights) ) weights <- rep(1, N )
+  if (is.null(weights)) weights <- rep(1,N)
   if (!is.null(weights) && any(weights < 0)) {
     stop("negative weights not allowed")
   }
@@ -204,7 +205,7 @@ dglm <- function(formula = formula(data),
     if(logdlink) deta <- deta + 1.27036
     phi <- dfamily$linkinv(deta+offset)
   }
-  if (any(phi<=0)) {
+  if (any(phi <= 0)) {
     cat("Some values for  phi  are non-positive, suggesting an inappropriate model",
         "Try a different link function.\n")
   }
@@ -212,12 +213,11 @@ dglm <- function(formula = formula(data),
   zm <- as.vector( eta + (y - mu) / family$mu.eta(eta) )
   wm <- as.vector( eval(family$variance(mu))*weights/phi )
   # as.vector()  added 30 October 2012
-  mfit <- lm.wfit(X, zm, wm, method="qr", singular.ok=TRUE) # ,qr=reml)
+  mfit <- lm.wfit(X, zm, wm, method = "qr", singular.ok = TRUE) # ,qr=reml)
   eta <- mfit$fitted.values
   
   
   mu <- family$linkinv(eta+offset)
-  cat("family:",family$family,"\n")
   if ( family$family=="Tweedie") {
     cat("p:",tweedie.p,"\n")
     if ( (tweedie.p >0) & (any(mu<0)) ) {
