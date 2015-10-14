@@ -53,28 +53,28 @@ dglm <- function(formula = formula(data),
   cnames <- cnames[match(mnames,cnames,0)]
   mcall <- call[cnames]
   mcall[[1]] <- as.name("model.frame")
-  mframe <<- eval(mcall, sys.parent())  ### NEEDS THE <<- ###################################################
-  mf <- match.call(expand.dots=FALSE)
+  mean.mframe <<- eval(mcall, sys.parent())  ### NEEDS THE <<- ###################################################
+  mf <- match.call(expand.dots = FALSE)
   
   #   Now extract the glm components
-  y <- model.response(mframe, "numeric")
+  y <- model.response(mean.mframe, "numeric")
   
-  if(is.null(dim(y))) {
+  if (is.null(dim(y))) {
     N <- length(y) 
   } else {
     N <- dim(y)[1]
   }
   nobs <- N # Needed for some of the  eval  calls
-  mterms <- attr(mframe, "terms")
-  X <- model.matrix(mterms, mframe, contrasts)
+  mterms <- attr(mean.mframe, "terms")
+  X <- model.matrix(mterms, mean.mframe, contrasts)
   
-  weights <- model.weights(mframe)
+  weights <- model.weights(mean.mframe)
   if (is.null(weights)) weights <- rep(1,N)
   if (!is.null(weights) && any(weights < 0)) {
     stop("negative weights not allowed")
   }
   
-  offset <- model.offset(mframe)
+  offset <- model.offset(mean.mframe)
   if ( is.null(offset) ) offset <- rep(0, N )
   if (!is.null(offset) && length(offset) != NROW(y)) {
     stop(gettextf("number of offsets is %d should equal %d (number of observations)", 
@@ -101,7 +101,7 @@ dglm <- function(formula = formula(data),
   Z <- model.matrix(dterms, mframe, contrasts)
   doffset <- model.extract(mframe, offset)
   if ( is.null(doffset) ) doffset <- rep(0, N )
-  #
+
   #   Parse the dispersion link and evaluate as list
   name.dlink <- substitute(dlink)
   if(is.name(name.dlink)) {
@@ -115,7 +115,7 @@ dglm <- function(formula = formula(data),
       name.dlink <- deparse(name.dlink)
   }
   if(!is.null(name.dlink))   name.dlink <- name.dlink
-  #
+
   #   Construct the dispersion variance function
   if ( family$family=="Tweedie") {
     tweedie.p <- call$family$var.power
@@ -299,7 +299,7 @@ dglm <- function(formula = formula(data),
     zm <- eta + (y - mu) / family$mu.eta(eta)
     fam.wt <- expression( weights * family$variance(mu) ) 
     wm <- eval( fam.wt )/phi
-    mfit <- lm.wfit(X, zm, wm, method="qr", singular.ok=TRUE)
+    mfit <- lm.wfit(X, zm, wm, method = "qr", singular.ok = TRUE)
     eta <- mfit$fitted.values
     mu <- family$linkinv(eta+offset)
     if (family$family=="Tweedie"){
@@ -335,24 +335,26 @@ dglm <- function(formula = formula(data),
   #  linear.predictors and prior.weights are new components, and fitted.values
   #  has a new definition.
   #
-  mfit$formula <- call$formula
   mfit$call <- call
+  mfit$formula <- formula #environment(call$formula)
+  mfit$terms <- mterms
+  
+  mfit$model <- mean.mframe
+  
   mfit$family <- family
   
   mfit$linear.predictors <- mfit$fitted.values+offset
   mfit$fitted.values <- mu
   mfit$prior.weights <- weights
-  mfit$terms <- mterms
   mfit$contrasts <- attr(X, "contrasts")
   intercept <- attr(mterms, "intercept")
   mfit$df.null <- N - sum(weights == 0) - as.integer(intercept)
-  mfit$call <- call
   mfit$deviance <- sum(d/phi)
   mfit$aic <- NA
-  mfit$null.deviance <- glm.fit(x=X, y=y, weights=weights/phi, offset=offset, family=family)
-  if(length(mfit$null.deviance)>1) mfit$null.deviance <- mfit$null.deviance$null.deviance
-  if(ykeep) mfit$y <- y
-  if(xkeep) mfit$x <- X
+  mfit$null.deviance <- glm.fit(x = X, y = y, weights = weights/phi, offset = offset, family = family)
+  if (length(mfit$null.deviance) > 1) mfit$null.deviance <- mfit$null.deviance$null.deviance
+  if (ykeep) mfit$y <- y
+  if (xkeep) mfit$x <- X
   class(mfit) <- c("glm","lm")
   
   #
@@ -360,26 +362,28 @@ dglm <- function(formula = formula(data),
   #  As for glm.object except that prior.weights are not relevant.  Is
   #  nested in one output component.
   #
+  
+  call$formula <- dformula
+  dfit$terms <- dterms
+  dfit$model <- mframe
   dfit$family <- dfamily
   dfit$prior.weights <- rep(1, N)
-  dfit$linear.predictors <- dfit$fitted.values+doffset
+  dfit$linear.predictors <- dfit$fitted.values + doffset
   dfit$fitted.values <- phi
-  dfit$terms <- dterms
   dfit$aic <- NA
-  call$formula <- call$dformula
   call$dformula <- NULL
-  call$family <- call(dfamily$family,link=name.dlink)
+  call$family <- call(dfamily$family,link = name.dlink)
   dfit$call <- call
-  dfit$residuals <- dfamily$dev.resid(d, phi, wt=rep(1/2,N) )
+  dfit$residuals <- dfamily$dev.resid(d, phi, wt = rep(1/2,N) )
   dfit$deviance <- sum( dfit$residuals  )
-  dfit$null.deviance <- glm.fit(x=Z, y=d, weights=rep(1/2,N), offset=doffset, family=dfamily)
-  if(length(dfit$null.deviance)>1) dfit$null.deviance <- dfit$null.deviance$null.deviance
-  if(ykeep) dfit$y <- d
-  if(zkeep) dfit$z <- Z
+  dfit$null.deviance <- glm.fit(x = Z, y = d, weights = rep(1/2, N), offset = doffset, family = dfamily)
+  if (length(dfit$null.deviance) > 1) dfit$null.deviance <- dfit$null.deviance$null.deviance
+  if (ykeep) dfit$y <- d
+  if (zkeep) dfit$z <- Z
   dfit$formula <- as.vector(attr(dterms, "formula"))
   dfit$iter <- iter
   class(dfit) <- c("glm","lm")
-  out <- c(mfit, list(dispersion.fit = dfit, iter=iter, method=method, m2loglik=m2loglik))
+  out <- c(mfit, list(dispersion.fit = dfit, iter = iter, method = method, m2loglik = m2loglik))
   class(out) <- c("dglm","glm","lm")
   out
 }
