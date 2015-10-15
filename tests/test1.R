@@ -20,7 +20,7 @@ rwc.df <- data.frame(y, a, b, c, d)
 mean.formula <- as.formula('y ~ a + b')
 var.formula <- as.formula('~ c + d')
 
-l <- MyFunc(mean.formula = mean.formula, var.formula = var.formula, model.df = rwc.df)
+l <- TestFunc(mean.formula = mean.formula, var.formula = var.formula, model.df = rwc.df)
 
 par(mfrow = c(1, 2))
 plot(mu, l$dglm.mean$fit); abline(0, 1)

@@ -1,4 +1,4 @@
-MyFunc <- function(mean.formula, var.formula, model.df) {
+TestFunc <- function(mean.formula, var.formula, model.df) {
   
   my.glm <- glm(formula = mean.formula,
                 data = model.df)
