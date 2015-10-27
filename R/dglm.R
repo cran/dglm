@@ -53,8 +53,8 @@ dglm <- function(formula = formula(data),
   cnames <- cnames[match(mnames,cnames,0)]
   mcall <- call[cnames]
   mcall[[1]] <- as.name("model.frame")
-  mean.mframe <<- eval(mcall, sys.parent())  ### NEEDS THE <<- ###################################################
-  mf <- match.call(expand.dots = FALSE)
+  mean.mframe <- eval(mcall, parent.frame())  ### NEEDS THE <<- ###################################################
+#   mf <- match.call(expand.dots = FALSE)
   
   #   Now extract the glm components
   y <- model.response(mean.mframe, "numeric")
@@ -95,11 +95,11 @@ dglm <- function(formula = formula(data),
                              1,dformula[2],dformula[3])
   
   #   Evaluate the model frame and extract components
-  mframe <- eval(mcall, sys.parent())
-  dterms <- attr(mframe, "terms")
+  var.mframe <- eval(mcall, sys.parent())
+  dterms <- attr(var.mframe, "terms")
   
-  Z <- model.matrix(dterms, mframe, contrasts)
-  doffset <- model.extract(mframe, offset)
+  Z <- model.matrix(dterms, var.mframe, contrasts)
+  doffset <- model.extract(var.mframe, offset)
   if ( is.null(doffset) ) doffset <- rep(0, N )
 
   #   Parse the dispersion link and evaluate as list
@@ -197,13 +197,13 @@ dglm <- function(formula = formula(data),
   #   Careful:   Called dev.resid, but appear to be the deviance residuals squared
   d <- family$dev.resids(y, mu, weights)
   
-  if(!is.null(phistart)) {
+  if (!is.null(phistart)) {
     phi <- phistart
-    deta <- dfamily$linkfun(phi)-doffset
+    deta <- dfamily$linkfun(phi) - doffset
   } else {
-    deta <- lm.fit(Z,dfamily$linkfun(d+(d==0)/6)-doffset,singular.ok=TRUE)$fitted.values
-    if(logdlink) deta <- deta + 1.27036
-    phi <- dfamily$linkinv(deta+offset)
+    deta <- lm.fit(Z,dfamily$linkfun(d + (d == 0)/6) - doffset,singular.ok = TRUE)$fitted.values
+    if (logdlink) deta <- deta + 1.27036
+    phi <- dfamily$linkinv(deta + offset)
   }
   if (any(phi <= 0)) {
     cat("Some values for  phi  are non-positive, suggesting an inappropriate model",
@@ -217,10 +217,10 @@ dglm <- function(formula = formula(data),
   eta <- mfit$fitted.values
   
   
-  mu <- family$linkinv(eta+offset)
-  if ( family$family=="Tweedie") {
+  mu <- family$linkinv(eta + offset)
+  if ( family$family == "Tweedie") {
     cat("p:",tweedie.p,"\n")
-    if ( (tweedie.p >0) & (any(mu<0)) ) {
+    if ( (tweedie.p > 0) & (any(mu < 0)) ) {
       cat("Some values for  mu  are negative, suggesting an inappropriate model.",
           "Try a different link function.\n")
     }
@@ -230,17 +230,17 @@ dglm <- function(formula = formula(data),
   #  Initial (minus twice log) likelihood or adjusted profile likelihood
   const <- dglm.constant(y,family,weights)
   
-  if(Digamma) {
-    h <- 2*(lgamma(weights/phi)+(1+log(phi/weights))*weights/phi)
+  if (Digamma) {
+    h <- 2*(lgamma(weights/phi) + (1 + log(phi/weights))*weights/phi)
   } else {
     h <- log(phi/weights)
   }
   m2loglik <- const + sum(h + d/phi)
   
-  if(reml)
+  if (reml)
     m2loglik <- m2loglik + 2*log(abs(prod(diag(mfit$R))))
   
-  m2loglikold <- m2loglik+1
+  m2loglikold <- m2loglik + 1
   #  Estimate model by alternate iterations
   
   epsilon <- control$epsilon
@@ -248,22 +248,22 @@ dglm <- function(formula = formula(data),
   trace <- control$trace
   iter <- 0
   
-  while ( abs(m2loglikold-m2loglik)/(abs(m2loglikold)+1) > epsilon && iter < maxit )  {
+  while (abs(m2loglikold-m2loglik)/(abs(m2loglikold) + 1) > epsilon && iter < maxit )  {
     
     ################################
     #      dispersion submodel
     hdot <- 1/dfamily$mu.eta( deta )
     
-    if(Digamma) {
-      delta <- 2*weights*( log(weights/phi) - digamma(weights/phi) )
-      u <- 2*weights^2*( trigamma(weights/phi) - phi/weights)
-      fdot <- phi^2 / u * hdot  # p 50
-    } else { # In normal and iG cases, eg, the dispersion sub-model is gamma
+    if (Digamma) {
+      delta <- 2*weights*(log(weights/phi) - digamma(weights/phi))
+      u <- 2*(weights ^ 2)*(trigamma(weights/phi) - phi/weights)
+      fdot <- (phi ^ 2) / u * hdot  # p 50
+    } else {# In normal and iG cases, eg, the dispersion sub-model is gamma
       delta <- phi
-      u <- phi^2 # variance function for disp. model; u(delta)=delta^2 is gamma
+      u <- (phi ^ 2) # variance function for disp. model; u(delta)=delta^2 is gamma
       fdot <- hdot
     }
-    wd <- 1 / (fdot^2 * u)   # ie Smyth, p 50.  We don't include the factor of 2,
+    wd <- 1 / ((fdot ^ 2) * u)   # ie Smyth, p 50.  We don't include the factor of 2,
     # as that is the disp. parameter, which enters via
     # the  dispersion=2  argument for the summary.
     
@@ -365,7 +365,7 @@ dglm <- function(formula = formula(data),
   
   call$formula <- dformula
   dfit$terms <- dterms
-  dfit$model <- mframe
+  dfit$model <- var.mframe
   dfit$family <- dfamily
   dfit$prior.weights <- rep(1, N)
   dfit$linear.predictors <- dfit$fitted.values + doffset
