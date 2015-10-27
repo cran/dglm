@@ -21,8 +21,6 @@ TestFunc <- function(mean.formula, var.formula, model.df) {
 }
 
 
-
-
 a <- runif(n)
 b <- runif(n)
 c <- runif(n)
@@ -34,15 +32,17 @@ mu <- betas[1] + a*betas[2] + b*betas[3]
 sd <- sqrt(exp(betas[4] + c*betas[5] + d*betas[6]))
 y <- mu + rnorm(n = n, sd = sd)
 
-rwc.df <- data.frame(y, a, b, c, d)
+my.df <- data.frame(y, a, b, c, d)
 
 mean.formula <- as.formula('y ~ a + b')
 var.formula <- as.formula('~ c + d')
 
-l <- TestFunc(mean.formula = mean.formula, var.formula = var.formula, model.df = rwc.df)
+l <- TestFunc(mean.formula = mean.formula, var.formula = var.formula, model.df = my.df)
 
 par(mfrow = c(1, 2))
 plot(mu, l$dglm.mean$fit); abline(0, 1)
 legend(x = 'topleft', legend = paste(c('intercept  ', '           a', '          b'), round(betas[1:3], 1)))
 plot(sd, exp(l$dglm.var$fit/l$dglm.var$residual.scale)); abline(0, 1)
 legend(x = 'topleft', legend = paste(c('intercept  ', '           c', '           d'), round(betas[4:6], 2)))
+
+my.dglm <- dglm(formula = mean.formula, dformula = var.formula, data = my.df)
