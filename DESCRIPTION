@@ -5,7 +5,9 @@ Title: Double Generalized Linear Models
 Author: Peter K Dunn <pdunn2@usc.edu.au> and Gordon K Smyth
 Maintainer: Peter K Dunn <pdunn2@usc.edu.au>
 Depends: R (>= 2.8.0), statmod(>= 1.4.20)
-Description: Fitting double  generalized linear models
+Description: This package fits double generalized linear models (DGLMs).
+  This class of models uses one generalized linear model (GLM) to fit the specified response and
+  a second GLM to fit the deviance of the first model.  
 License: GPL (>= 2)
 NeedsCompilation: no
 URL: http://www.r-project.org/package=dglm
