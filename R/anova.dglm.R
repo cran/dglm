@@ -1,4 +1,4 @@
-anova.dglm <- function(object, ..., dispersion = NULL, test = NULL)
+anova.dglm <- function(object, ...)
 {
   #  ANOVA for double glm (likelihood ratio tests for mean and dispersion models)
   #  GKS  16 Jan 98

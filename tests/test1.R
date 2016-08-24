@@ -1,6 +1,6 @@
 library(dglm)
 
-n <- 400
+n <- 1000
 
 TestFunc <- function(mean.formula, var.formula, model.df) {
   
@@ -26,11 +26,11 @@ b <- runif(n)
 c <- runif(n)
 d <- runif(n)
 
-betas <- c(runif(n = 3, min = 10, max = 20), runif(n = 3, min = 1, max = 2))
+betas <- c(runif(n = 3, min = -10, max = 10), runif(n = 3, min = -1, max = 1))
 
 mu <- betas[1] + a*betas[2] + b*betas[3]
-sd <- sqrt(exp(betas[4] + c*betas[5] + d*betas[6]))
-y <- mu + rnorm(n = n, sd = sd)
+var <- exp(betas[4] + c*betas[5] + d*betas[6])
+y <- mu + rnorm(n = n, sd = sd(var))
 
 my.df <- data.frame(y, a, b, c, d)
 
@@ -39,10 +39,17 @@ var.formula <- as.formula('~ c + d')
 
 l <- TestFunc(mean.formula = mean.formula, var.formula = var.formula, model.df = my.df)
 
-par(mfrow = c(1, 2))
+par(mfrow = c(2, 2))
 plot(mu, l$dglm.mean$fit); abline(0, 1)
-legend(x = 'topleft', legend = paste(c('intercept  ', '           a', '          b'), round(betas[1:3], 1)))
-plot(sd, exp(l$dglm.var$fit/l$dglm.var$residual.scale)); abline(0, 1)
-legend(x = 'topleft', legend = paste(c('intercept  ', '           c', '           d'), round(betas[4:6], 2)))
+legend(x = 'topleft', legend = paste(c('mu:', 'a', 'b'), round(betas[1:3], 1)), bty = 'n')
+plot(var, exp(l$dglm.var$fit/l$dglm.var$residual.scale)); abline(0, 1)
+legend(x = 'topleft', legend = paste(c('mu:', 'c:', 'd:'), round(betas[4:6], 2)))
 
-my.dglm <- dglm(formula = mean.formula, dformula = var.formula, data = my.df)
+my.dglm <- dglm(formula = mean.formula, dformula = var.formula, data = my.df, method = 'reml')
+
+plot(mu, predict(my.dglm))
+plot(sqrt(var), predict(my.dglm$dispersion.fit))
+
+
+anova(my.dglm)
+

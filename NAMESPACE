@@ -10,3 +10,4 @@ import(
 S3method(summary, dglm)
 S3method(anova, dglm)
 S3method(print, summary.dglm)
+S3method(residuals, dglm)

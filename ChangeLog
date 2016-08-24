@@ -1,3 +1,12 @@
+1.8.3   
+    Deleted unsused arguments in anova.dglm()...in progress
+
+
+1.8.2 04 November 2015
+    Added model frames to the return object as [[‘model’]]. This is consistent with how 
+    glm() works and fixes a bug where predict(dglm.object, se = TRUE) produced an error 
+    when called from any environment other than global.
+
 1.8.1 07 November 2014
    Fixed an error where mu<0 was flagged as an error, even for the Gaussian case.
    The code now checks that the dispersion is greater than zero, the original intent.

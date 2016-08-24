@@ -1,7 +1,7 @@
 \name{anova.dglm}
 \title{Analysis of Deviance for Double Generalized Linear Model Fits}
 \usage{
-\method{anova}{dglm}(object, ..., dispersion = NULL, test = NULL)
+\method{anova}{dglm}(object, ...)
 }
 \alias{anova.dglm}
 \description{
@@ -11,10 +11,6 @@
 \arguments{
   \item{object}{objects of class \code{dglm}, typically
     the result of a call to \code{\link{dglm}}.}
-  \item{dispersion}{the dispersion parameter for the fitting family.
-    By default it is obtained from \code{glm.obj}.}
-  \item{test}{a character string, (partially) matching one of \code{"Chisq"},
-    \code{"F"} or \code{"Cp"}. See \code{\link{stat.anova}}.}
   \item{...}{Not used.}
 }
 \details{
