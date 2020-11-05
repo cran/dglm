@@ -5,7 +5,7 @@
 \description{Fits a generalized linear model with a link-linear model for the dispersion as well as for the mean.}
 \usage{
 dglm(formula=formula(data), dformula = ~ 1, family = stats::gaussian, dlink = "log", 
-data = sys.parent(), subset = NULL, weights = NULL, contrasts = NULL, 
+data = parent.frame(), subset = NULL, weights = NULL, contrasts = NULL, 
 method = "ml", mustart = NULL, betastart = NULL, etastart = NULL, phistart = NULL, 
 control = dglm.control(...), ykeep = TRUE, xkeep = FALSE, zkeep = FALSE, ...)
 

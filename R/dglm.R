@@ -2,7 +2,7 @@ dglm <- function(formula = formula(data),
                  dformula = ~1,
                  family = stats::gaussian,
                  dlink = "log",
-                 data = sys.parent(),
+                 data = parent.frame(),
                  subset = NULL,
                  weights = NULL,
                  contrasts = NULL,
@@ -15,12 +15,13 @@ dglm <- function(formula = formula(data),
                  ykeep = TRUE,
                  xkeep = FALSE,
                  zkeep = FALSE,
-                 ...) {
+                 ...)
   #   Double generalized linear models
   #   Gordon Smyth, Walter and Eliza Hall Institute of Medical Research
   #   S-Plus version created 8 Dec 1997, last revised 22 Oct 1999.
   #
   #   Ported to R by Peter Dunn, 22 August 2005
+  #   Last modified 29 Oct 2020
   #
   #  Set up mean submodel:
   #               y   response
@@ -32,6 +33,7 @@ dglm <- function(formula = formula(data),
   #       betastart   starting values for coefficients (optional)
   #
   #   Save call for future reference
+{
   call <- match.call()
 
   #   Get family for mean model
@@ -99,7 +101,7 @@ dglm <- function(formula = formula(data),
                              1,dformula[2],dformula[3])
 
   #   Evaluate the model frame and extract components
-  var.mframe <- eval(mcall, sys.parent())
+  var.mframe <- eval(mcall, envir=parent.frame())
   dterms <- attr(var.mframe, "terms")
 
   Z <- stats::model.matrix(dterms, var.mframe, contrasts)
