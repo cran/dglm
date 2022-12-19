@@ -1,6 +1,6 @@
 dglm <- function(formula = formula(data),
                  dformula = ~1,
-                 family = stats::gaussian,
+                 family = gaussian,
                  dlink = "log",
                  data = parent.frame(),
                  subset = NULL,
@@ -63,7 +63,7 @@ dglm <- function(formula = formula(data),
   # mf <- match.call(expand.dots = FALSE)  # commented this out with seemingly no problem.
 
   #   Now extract the glm components
-  y <- stats::model.response(mean.mframe, "numeric")
+  y <- model.response(mean.mframe, "numeric")
 
   if (is.null(dim(y))) {
     N <- length(y)
@@ -72,15 +72,15 @@ dglm <- function(formula = formula(data),
   }
   nobs <- N # Needed for some of the  eval  calls
   mterms <- attr(mean.mframe, "terms")
-  X <- stats::model.matrix(mterms, mean.mframe, contrasts)
+  X <- model.matrix(mterms, mean.mframe, contrasts)
 
-  weights <- stats::model.weights(mean.mframe)
+  weights <- model.weights(mean.mframe)
   if (is.null(weights)) weights <- rep(1,N)
   if (!is.null(weights) && any(weights < 0)) {
     stop("negative weights not allowed")
   }
 
-  offset <- stats::model.offset(mean.mframe)
+  offset <- model.offset(mean.mframe)
   if ( is.null(offset) ) offset <- rep(0, N )
   if (!is.null(offset) && length(offset) != NROW(y)) {
     stop(gettextf("number of offsets is %d should equal %d (number of observations)",
@@ -104,8 +104,8 @@ dglm <- function(formula = formula(data),
   var.mframe <- eval(mcall, envir=parent.frame())
   dterms <- attr(var.mframe, "terms")
 
-  Z <- stats::model.matrix(dterms, var.mframe, contrasts)
-  doffset <- stats::model.extract(var.mframe, offset)
+  Z <- model.matrix(dterms, var.mframe, contrasts)
+  doffset <- model.extract(var.mframe, offset)
   if ( is.null(doffset) ) doffset <- rep(0, N )
 
   #   Parse the dispersion link and evaluate as list
@@ -131,10 +131,10 @@ dglm <- function(formula = formula(data),
   # In other words, if the mean glm is a gamma (or, equivalently, Tweedie with p=2), use the digamma explicitly
   if (Digamma) {
 
-    linkinv <- stats::make.link(name.dlink)$linkinv
-    linkfun <- stats::make.link(name.dlink)$linkfun
-    mu.eta <- stats::make.link(name.dlink)$mu.eta
-    valid.eta <- stats::make.link(name.dlink)$valid.eta
+    linkinv <- make.link(name.dlink)$linkinv
+    linkfun <- make.link(name.dlink)$linkfun
+    mu.eta <- make.link(name.dlink)$mu.eta
+    valid.eta <- make.link(name.dlink)$valid.eta
     init <- expression({
       if (any(y <= 0)){
         print(y)
@@ -194,7 +194,7 @@ dglm <- function(formula = formula(data),
       eta <- family$linkfun(mu)-offset
     } else {
 
-      eta <- stats::lm.fit(X,family$linkfun(mu)-offset,singular.ok=TRUE)$fitted.values
+      eta <- lm.fit(X,family$linkfun(mu)-offset,singular.ok=TRUE)$fitted.values
       # Recall:  fitted values are on the linear predictor scale
       mu <- family$linkinv(eta+offset)
     }
@@ -207,7 +207,7 @@ dglm <- function(formula = formula(data),
     phi <- phistart
     deta <- dfamily$linkfun(phi) - doffset
   } else {
-    deta <- stats::lm.fit(Z,dfamily$linkfun(d + (d == 0)/6) - doffset,singular.ok = TRUE)$fitted.values
+    deta <- lm.fit(Z,dfamily$linkfun(d + (d == 0)/6) - doffset,singular.ok = TRUE)$fitted.values
     if (logdlink) deta <- deta + 1.27036
     phi <- dfamily$linkinv(deta + offset)
   }
@@ -219,7 +219,7 @@ dglm <- function(formula = formula(data),
   zm <- as.vector( eta + (y - mu) / family$mu.eta(eta) )
   wm <- as.vector( eval(family$variance(mu))*weights/phi )
   # as.vector()  added 30 October 2012
-  mfit <- stats::lm.wfit(X, zm, wm, method = "qr", singular.ok = TRUE) # ,qr=reml)
+  mfit <- lm.wfit(X, zm, wm, method = "qr", singular.ok = TRUE) # ,qr=reml)
   eta <- mfit$fitted.values
 
 
@@ -274,7 +274,7 @@ dglm <- function(formula = formula(data),
     # the  dispersion=2  argument for the summary.
 
     if(reml) {
-      h <- stats::hat(mfit$qr)
+      h <- hat(mfit$qr)
       delta <- delta - phi*h
       wd <- wd - 2*(h/hdot^2/phi^2) + h^2
     }
@@ -290,7 +290,7 @@ dglm <- function(formula = formula(data),
     zd <- deta + (d - delta) * fdot
 
     # Now fit dispersion submodel, with response zd, explanatory vars Z, weights wd
-    dfit <- stats::lm.wfit(Z, zd, wd, method="qr", singular.ok=TRUE)
+    dfit <- lm.wfit(Z, zd, wd, method="qr", singular.ok=TRUE)
     deta <- dfit$fitted.values
 
     phi <- dfamily$linkinv(deta+doffset)
@@ -305,7 +305,7 @@ dglm <- function(formula = formula(data),
     zm <- eta + (y - mu) / family$mu.eta(eta)
     fam.wt <- expression( weights * family$variance(mu) )
     wm <- eval( fam.wt )/phi
-    mfit <- stats::lm.wfit(X, zm, wm, method = "qr", singular.ok = TRUE)
+    mfit <- lm.wfit(X, zm, wm, method = "qr", singular.ok = TRUE)
     eta <- mfit$fitted.values
     mu <- family$linkinv(eta+offset)
     if (family$family=="Tweedie"){
@@ -357,7 +357,7 @@ dglm <- function(formula = formula(data),
   mfit$df.null <- N - sum(weights == 0) - as.integer(intercept)
   mfit$deviance <- sum(d/phi)
   mfit$aic <- NA
-  mfit$null.deviance <- stats::glm.fit(x = X, y = y, weights = weights/phi, offset = offset, family = family)
+  mfit$null.deviance <- glm.fit(x = X, y = y, weights = weights/phi, offset = offset, family = family)
   if (length(mfit$null.deviance) > 1) mfit$null.deviance <- mfit$null.deviance$null.deviance
   if (ykeep) mfit$y <- y
   if (xkeep) mfit$x <- X
@@ -382,7 +382,7 @@ dglm <- function(formula = formula(data),
   dfit$call <- call
   dfit$residuals <- dfamily$dev.resid(d, phi, wt = rep(1/2,N) )
   dfit$deviance <- sum( dfit$residuals  )
-  dfit$null.deviance <- stats::glm.fit(x = Z, y = d, weights = rep(1/2, N), offset = doffset, family = dfamily)
+  dfit$null.deviance <- glm.fit(x = Z, y = d, weights = rep(1/2, N), offset = doffset, family = dfamily)
   if (length(dfit$null.deviance) > 1) dfit$null.deviance <- dfit$null.deviance$null.deviance
   if (ykeep) dfit$y <- d
   if (zkeep) dfit$z <- Z

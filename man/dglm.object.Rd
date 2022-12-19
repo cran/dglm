@@ -1,8 +1,9 @@
-\name{dglm.object}
-\alias{dglm.object}
-\title{Double generalized linear model object}
-\description{Class of objects returned by fitting double generalized linear models.}
+\name{dglm-class}
+\docType{class}
+\alias{dglm-class}
+\title{Double Generalized Linear Model - class}
 
+\description{Class of objects returned by fitting double generalized linear models.}
 
 \section{Generation}{
     This class of objects is returned by the \code{\link{dglm}} function 
@@ -115,7 +116,7 @@ approximate residual maximum likelihood and diagnostics.
 Research Report, Department of Statistics, University of Adelaide. 
 }
 
-\seealso{\code{\link{dglm.object}}, \code{Digamma family}, \code{Polygamma}}
+\seealso{\code{\link{dglm}}, \code{Digamma family}, \code{Polygamma}}
 
 
 \note{
@@ -149,6 +150,7 @@ summary(out2$dispersion.fit)
 
 # Examine goodness of fit of dispersion model by plotting residuals
 plot(fitted(out2$dispersion.fit),residuals(out2$dispersion.fit)) 
-} 
-\keyword{models}
+}
+
+\keyword{classes}
 \keyword{regression}

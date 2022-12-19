@@ -1,15 +1,15 @@
 \name{dglm}
 \alias{dglm}
 \alias{dglm.constant}
-\title{Double generalised linear models}
+\title{Double Generalized Linear Models}
 \description{Fits a generalized linear model with a link-linear model for the dispersion as well as for the mean.}
 \usage{
-dglm(formula=formula(data), dformula = ~ 1, family = stats::gaussian, dlink = "log", 
+dglm(formula=formula(data), dformula = ~ 1, family = gaussian, dlink = "log", 
 data = parent.frame(), subset = NULL, weights = NULL, contrasts = NULL, 
 method = "ml", mustart = NULL, betastart = NULL, etastart = NULL, phistart = NULL, 
 control = dglm.control(...), ykeep = TRUE, xkeep = FALSE, zkeep = FALSE, ...)
 
-dglm.constant(y,family,weights=1)
+dglm.constant(y, family, weights = 1)
 }
 \arguments{
    \item{formula}{a symbolic description of the model to be fit. 
@@ -106,7 +106,7 @@ dglm.constant(y,family,weights=1)
    components for the outer iteration and overall likelihood. 
    The \code{summary} and \code{anova} functions have special methods for \code{dglm}
    objects. 
-   Any generic function which has methods for \code{glm}s or \code{lm}s will work on
+   Any generic function that has methods for \code{glm}s or \code{lm}s will work on
    \code{out}, giving information about the mean submodel. 
    Information about the dispersion submodel can be obtained by using
    \code{out$dispersion.fit} as argument rather than out itself. 
@@ -117,19 +117,18 @@ dglm.constant(y,family,weights=1)
 
    The dispersion submodel is treated as a gamma family unless the original 
    reponses are gamma, in which case the dispersion submodel is digamma. 
-   (Note that the digamma and trigamma functions are required to fit a digamma
-   family.) This is exact if the original \acronym{glm} family is \code{gaussian},
+   This is exact if the original glm family is \code{gaussian},
    \code{Gamma} or \code{inverse.gaussian}. In other cases it can be 
    justified by the saddle-point approximation to the density of the responses. 
    The results will therefore be close to exact ML or REML when the dispersions 
-   are small compared to the means. In all cases the dispersion submodel as prior
+   are small compared to the means. In all cases the dispersion submodel has prior
    weights 1, and has its own dispersion parameter which is 2.
 }
 
 \value{
    an object of class \code{dglm} is returned, 
    which inherits from \code{glm} and \code{lm}. 
-   See \code{\link{dglm.object}} for details.
+   See \code{\link{dglm-class}} for details.
 }
 
 \references{
@@ -139,15 +138,17 @@ Smyth, G. K. (1989). Generalized linear models with varying dispersion.
 Smyth, G. K., and Verbyla, A. P. (1999). 
 Adjusted likelihood methods for modelling dispersion in generalized linear models.
 \emph{Environmetrics}, \bold{10}, 696-709.
+\url{http://www.statsci.org/smyth/pubs/Ties98-Preprint.pdf}
 
-Verbyla, A. P., and Smyth, G. K. (1998). Double generalized linear models:
-approximate residual maximum likelihood and diagnostics. 
-Research Report, Department of Statistics, University of Adelaide. 
+Smyth, G. K., and Verbyla, A. P. (1999).
+Double generalized linear models: approximate REML and diagnostics.
+In \emph{Statistical Modelling: Proceedings of the 14th International Workshop on Statistical Modelling}, Graz, Austria, July 19-23, 1999, H. Friedl, A. Berghold, G. Kauermann (eds.), Technical University, Graz, Austria, pages 66-80.
+\url{http://www.statsci.org/smyth/pubs/iwsm99-Preprint.pdf}
 }
-\author{Gordon Smyth, 
-ported to \R\ by Peter Dunn (\email{pdunn2@usc.edu.au})}
 
-\seealso{\code{\link{dglm.object}}, \code{\link{dglm.control}}, 
+\author{Gordon Smyth, ported to R by Peter Dunn}
+
+\seealso{\code{\link{dglm-class}}, \code{\link{dglm.control}}, 
 \code{Digamma family}, \code{Polygamma}}
 
 
@@ -159,7 +160,6 @@ The anova method is questionable when applied to an \code{dglm} object with
 \examples{
 # Continuing the example from  glm, but this time try
 # fitting a Gamma double generalized linear model also.
-library(statmod)
 clotting <- data.frame(
       u = c(5,10,15,20,30,40,60,80,100),
       lot1 = c(118,58,42,35,27,25,21,19,18),

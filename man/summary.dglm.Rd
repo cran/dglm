@@ -1,5 +1,5 @@
 \name{summary.dglm}
-\title{Summarizing double generalized linear model fits}
+\title{Summarize Double Generalized Linear Model Fit}
 \alias{print.summary.dglm}
 \alias{summary.dglm}
 \description{These functions are all \code{methods} for class \code{dglm} or
@@ -70,15 +70,18 @@ Smyth, G. K., and Verbyla, A. P. (1999).
 Adjusted likelihood methods for modelling dispersion in generalized linear models.
 \emph{Environmetrics}, \bold{10}, 696-709.
 
-Verbyla, A. P., and Smyth, G. K. (1998). Double generalized linear models:
-approximate residual maximum likelihood and diagnostics. 
-Research Report, Department of Statistics, University of Adelaide. 
+Smyth, G. K., and Verbyla, A. P. (1999).
+Double generalized linear models: approximate REML and diagnostics.
+In \emph{Statistical Modelling: Proceedings of the 14th International Workshop on Statistical Modelling}, Graz, Austria, July 19-23, 1999, H. Friedl, A. Berghold, G. Kauermann (eds.), Technical University, Graz, Austria, pages 66-80.
+\url{http://www.statsci.org/smyth/pubs/iwsm99-Preprint.pdf}
 }
 
-\seealso{\code{\link{dglm.object}}, \code{\link{dglm.control}}, 
+\seealso{
+\code{\link{dglm-class}},
+\code{\link{dglm.control}}, 
 \code{\link{anova.dglm}},
-\code{\link{summary.glm}} }
-
+\code{\link{summary.glm}}
+}
 
 \note{
 The anova method is questionable when applied to an \code{dglm} object with

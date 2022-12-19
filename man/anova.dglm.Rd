@@ -35,21 +35,24 @@
 ported to \R\ by Peter Dunn (\email{pdunn2@usc.edu.au})}
 
 \references{
-  Hastie, T. J. and Pregibon, D. (1992)
-  \emph{Generalized linear models.}
-  Chapter 6 of \emph{Statistical Models in S}
-  eds J. M. Chambers and T. J. Hastie, Wadsworth \& Brooks/Cole.
+Hastie, T. J. and Pregibon, D. (1992)
+\emph{Generalized linear models.}
+Chapter 6 of \emph{Statistical Models in S},
+edited by J. M. Chambers and T. J. Hastie,
+Wadsworth and Brooks/Cole.
 
-   Smyth, G. K. (1989). Generalized linear models with varying dispersion.  
-   \emph{J. R. Statist. Soc. B}, \bold{51}, 47--60.
+Smyth, G. K. (1989). Generalized linear models with varying dispersion.  
+\emph{J. R. Statist. Soc. B}, \bold{51}, 47--60.
 
-   Smyth, G. K., and Verbyla, A. P. (1999). 
-   Adjusted likelihood methods for modelling dispersion in generalized linear models.
-   \emph{Environmetrics}, \bold{10}, 696-709.
+Smyth, G. K., and Verbyla, A. P. (1999). 
+Adjusted likelihood methods for modelling dispersion in generalized linear models.
+\emph{Environmetrics}, \bold{10}, 696-709.
+\url{http://www.statsci.org/smyth/pubs/Ties98-Preprint.pdf}
 
-   Verbyla, A. P., and Smyth, G. K. (1998). Double generalized linear models:
-   approximate residual maximum likelihood and diagnostics. 
-   Research Report, Department of Statistics, University of Adelaide. 
+Smyth, G. K., and Verbyla, A. P. (1999).
+Double generalized linear models: approximate REML and diagnostics.
+In \emph{Statistical Modelling: Proceedings of the 14th International Workshop on Statistical Modelling}, Graz, Austria, July 19-23, 1999, H. Friedl, A. Berghold, G. Kauermann (eds.), Technical University, Graz, Austria, pages 66-80.
+\url{http://www.statsci.org/smyth/pubs/iwsm99-Preprint.pdf}
 }
 
 \seealso{
@@ -58,13 +61,12 @@ ported to \R\ by Peter Dunn (\email{pdunn2@usc.edu.au})}
 \examples{
 # Continuing the example from  glm, but this time try
 # fitting a Gamma double generalized linear model also.
-library(statmod)
 clotting <- data.frame(
       u = c(5,10,15,20,30,40,60,80,100),
       lot1 = c(118,58,42,35,27,25,21,19,18),
       lot2 = c(69,35,26,21,18,16,13,12,12))
          
-# The same example as in  glm: the dispersion is modelled as constant
+# The same example as in  glm: the dispersion is modeled as constant
 out <- dglm(lot1 ~ log(u), ~1, data=clotting, family=Gamma)
 summary(out)
 

@@ -1,60 +1,89 @@
-1.8.3   
-    Deleted unsused arguments in anova.dglm()...in progress
+19 Dec 2022: dglm 1.8.5
 
+- Capitalize help file titles.
 
-1.8.2 04 November 2015
-    Added model frames to the return object as [[‘model’]]. This is consistent with how 
-    glm() works and fixes a bug where predict(dglm.object, se = TRUE) produced an error 
-    when called from any environment other than global.
+- Convert aliases for dglm.object.Rd to be that for docType{class}.
 
-1.8.1 07 November 2014
-   Fixed an error where mu<0 was flagged as an error, even for the Gaussian case.
-   The code now checks that the dispersion is greater than zero, the original intent.
-   This was the cause of producing some errors in output seemingly unrelated.
-   Thanks for Lars Ronnegaard and Gordon Smyth for identifying this error.
+- Use American spellings.
+
+- Import instead of depend on statmod package in DESCRIPTION.
+
+- Add export() to NAMESPACE and remove exportPattern().
+
+- Add importFrom() to NAMESPACE to explicitly import functions from
+  the stats and statmod packages. Remove import(statmod) from
+  NAMESPACE and remove `stats::` from code.
+
+- Add Test.Rout file to test directory.
+
+- Update and complete ChangeLog file.
+
+- Update references to Verbyla & Smyth (1999).
+
+ 5 Nov 2020: dglm 1.8.4
+
+- Package maintenance taken over by Gordon Smyth.
+
+- Remove uses of sys.parent(), which are not allowed by CRAN.
+
+24 Aug 2016: dglm 1.8.3
+
+- Deleted unused arguments in anova.dglm().
+
+ 4 Nov 2015: dglm 1.8.2
+
+- Package maintenance taken over by Robert Corty
+  <robert_corty@med.unc.edu>.
+
+- Added model frames to the return object as [["model"]]. This is consistent with how 
+  glm() works and fixes a bug where predict(dglm.object, se = TRUE) produced an error 
+  when called from any environment other than global.
+
+ 7 Nov 2014: dglm 1.8.1
+
+- Fixed an error where mu<0 was flagged as an error, even for the Gaussian case.
+  The code now checks that the dispersion is greater than zero, the original intent.
+  This was the cause of producing some errors in output seemingly unrelated.
+  Thanks for Lars Ronnegaard and Gordon Smyth for identifying this error.
    
-1.7  30 October 2012
-	Minor edits to code and help files.
+30 October 2012: dglm 1.6.2
+	
+- Minor edits to code and help files.
 
-1.6  15/Dec/2008
-	Fixed a minor error in dglm.control.Rd
+- Fix minor error in dglm.control.Rd.
 
-1.6  15/Dec/2008
-  Dispersion model was incorrectly fitted (even in the examples)
-   compared to the given specification; introduced a fix that is
-   not entirely satisfactory, but works.
+- Dispersion model was incorrectly fitted (even in the examples)
+  compared to the given specification; introduced a fix that is
+  not entirely satisfactory, but works.
 
+ 6 May 2006: dglm 1.5
+ 
+- Corrected a reference to the dlink as dlink$name to name.dlink
 
-1.5   06 May 2006
-  Corrected a reference to the dlink as dlink$name to name.dlink
+- Changed four occurrences of `F` to `FALSE` in print.summary.dglm.
 
-   
-1.4:
-  Changed four occurrences of  F  rather than  FALSE  in
-  print.summary.dglm.
-
-1.3:  2006/11/28
+28 Nov 2006: dglm 1.3
   
-  Obviously didn't fix the 1.2 error; hopefully now fixed.
-  This was accomplished by adding a new input, etastart=NULL.
+Trying again to fix same error as previously. Adding a new input,
+etastart=NULL.
 
-  
+25 Sep 2006: dglm 1.2
 
-1.2: 2006/09/25
+Fixed an error identified by Sonja Kuhnt for Gaussian models:
+Error in eval(expr, envir, enclos) : object "etastart" not found.
 
-   Fixed an error identified by Sonja Kuhnt for Gaussian models:
-   Error in eval(expr, envir, enclos) : object "etastart" not found
+ 5 Sep 2006: dglm 1.1
 
-   
+Fixed error in convergence test identified by Cristiano Amancio for
+binomial data. Also fixed warning message "NaNs produced in: log(x)".
 
-v1.1: 
+15 Sep 2005: dglm 1.0
 
-   Fixed an error identified by Cristiano Amancio for binomial data:
+The function was ported by Peter Dunn to R and submitted as an R
+package to CRAN. Peter Dunn registered as package maintainer.
 
-   Error in while (abs(m2loglikold - m2loglik)/(abs(m2loglikold) + 1) > epsilon &&  :
-           absent value where TRUE/FALSE necessary
+22 Oct 1999
 
-   Furthermore: Warning message:
-   NaNs produced in: log(x) ".
-
-
+This package was originally a single function, written by
+Gordon Smyth in the S language, available from
+http://www.statsci.org/s/dglm.html.

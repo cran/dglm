@@ -39,7 +39,7 @@ print.summary.dglm <- function(x, ..., digits = NULL, quote = TRUE, prefix = "",
   if (residuals) {
     if (rdf > 5) {
       cat("Deviance Residuals:\n")
-      rq <- stats::quantile(as.vector(dresid))
+      rq <- quantile(as.vector(dresid))
       names(rq) <- c("Min", "1Q", "Median", "3Q", "Max")
       print(rq, digits = digits)
     }
@@ -99,7 +99,7 @@ print.summary.dglm <- function(x, ..., digits = NULL, quote = TRUE, prefix = "",
   if (residuals) {
     if (rdf > 5) {
       cat("Deviance Residuals:\n")
-      rq <- stats::quantile(as.vector(dresid))
+      rq <- quantile(as.vector(dresid))
       names(rq) <- c("Min", "1Q", "Median", "3Q", "Max")
       print(rq, digits = digits)
     }

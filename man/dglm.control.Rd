@@ -44,7 +44,7 @@ approximate residual maximum likelihood and diagnostics.
 Research Report, Department of Statistics, University of Adelaide. 
 }
 
-\seealso{\code{\link{dglm.object}}, \code{\link{dglm}}}
+\seealso{\code{\link{dglm-class}}, \code{\link{dglm}}}
 
 
 \examples{

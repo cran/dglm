@@ -32,7 +32,7 @@ dglm.constant <- function(y,family,weights=1) {
     if (any(V == 0)) V[V == 0] <- family$variance(y[V == 0]+1/6)
     const <- sum(log(2*pi*V))
     if (length(V) == 1 && length(y) > 1) const <- length(y)*const
-  } ### END: if (is.null(const))
+  }
   const
-} ### END: dglm.constant()
+}
 
