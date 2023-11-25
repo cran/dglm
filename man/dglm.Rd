@@ -134,22 +134,28 @@ dglm.constant(y, family, weights = 1)
 \references{
 Smyth, G. K. (1989). Generalized linear models with varying dispersion. 
 \emph{J. R. Statist. Soc. B}, \bold{51}, 47--60.
+\doi{10.1111/j.2517-6161.1989.tb01747.x}
 
 Smyth, G. K., and Verbyla, A. P. (1999). 
 Adjusted likelihood methods for modelling dispersion in generalized linear models.
 \emph{Environmetrics}, \bold{10}, 696-709.
-\url{http://www.statsci.org/smyth/pubs/Ties98-Preprint.pdf}
+\doi{10.1002/(SICI)1099-095X(199911/12)10:6<695::AID-ENV385>3.0.CO;2-M}
+\url{https://gksmyth.github.io/pubs/Ties98-Preprint.pdf}
 
 Smyth, G. K., and Verbyla, A. P. (1999).
 Double generalized linear models: approximate REML and diagnostics.
 In \emph{Statistical Modelling: Proceedings of the 14th International Workshop on Statistical Modelling}, Graz, Austria, July 19-23, 1999, H. Friedl, A. Berghold, G. Kauermann (eds.), Technical University, Graz, Austria, pages 66-80.
-\url{http://www.statsci.org/smyth/pubs/iwsm99-Preprint.pdf}
+\url{https://gksmyth.github.io/pubs/iwsm99-Preprint.pdf}
 }
 
 \author{Gordon Smyth, ported to R by Peter Dunn}
 
-\seealso{\code{\link{dglm-class}}, \code{\link{dglm.control}}, 
-\code{Digamma family}, \code{Polygamma}}
+\seealso{
+\code{\link{dglm-class}}, \code{\link{dglm.control}}, 
+\code{Digamma family}, \code{Polygamma}.
+
+See \url{https://gksmyth.github.io/s/dglm.html} for the original S-Plus code.
+}
 
 
 \note{
@@ -158,7 +164,7 @@ The anova method is questionable when applied to an \code{dglm} object with
 }
 
 \examples{
-# Continuing the example from  glm, but this time try
+# Continuing the example from glm, but this time try
 # fitting a Gamma double generalized linear model also.
 clotting <- data.frame(
       u = c(5,10,15,20,30,40,60,80,100),

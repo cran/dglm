@@ -27,26 +27,25 @@
 }
 
 \section{Structure}{
-    A \code{dglm} object consists of a \code{glm} object with the following
-	 additional components:
-	 
-	 \itemize{
-		\item{dispersion.fit}{the dispersion submodel: a \code{glm} object 
+    A \code{dglm} object consists of a \code{glm} object with the following additional components:
+
+	\tabular{ll}{
+		{\code{dispersion.fit}} \tab {the dispersion submodel: a \code{glm} object 
 		representing the fitted model for the dispersions. 
 		The responses for this model are the deviance components from the original
 		generalized linear model. 
-		The prior weights are 1 and the dispersion or scale of this model is 2.}
+		The prior weights are 1 and the dispersion or scale of this model is 2.}\cr
 		
-		\item{iter}{this component now represents the number of outer iterations 
+		{\code{iter}} \tab {this component now represents the number of outer iterations 
 		used to fit the coupled mean-dispersion models. 
 		At each outer iteration, one IRLS is done for each of the mean and dispersion
-		submodels.}
+		submodels.}\cr
 		
-		\item{method}{fitting method used: \code{"ml"} if maximum likelihood 
-		was used or \code{"reml"} if adjusted profile likelihood was used.}
+		{\code{method}} \tab {fitting method used: \code{"ml"} if maximum likelihood 
+		was used or \code{"reml"} if adjusted profile likelihood was used.}\cr
 		
-		\item{m2loglik}{minus twice the log-likelihood or 
-		adjusted profile likelihood of the fitted model.}
+		{\code{m2loglik}} \tab {minus twice the log-likelihood or 
+		adjusted profile likelihood of the fitted model.}\cr
 	}
 }
 	 
@@ -81,7 +80,7 @@ The output from \code{dglm}, \code{out} say, consists of two \code{glm} objects
 components for the outer iteration and overall likelihood. 
 The \code{summary} and \code{anova} functions have special methods for \code{dglm}
 objects. 
-Any generic function which has methods for \code{glm}s or \code{lm}s will work on
+Any generic function that has methods for \code{glm}s or \code{lm}s will work on
 \code{out}, giving information about the mean submodel. 
 Information about the dispersion submodel can be obtained by using
  \code{out$dispersion.fit} as argument rather than out itself. 
@@ -90,66 +89,41 @@ removing terms from the mean submodel,
 while \code{drop1(out$dispersion.fit,scale=2)} gives correct score 
 statistics for removing terms from the dispersion submodel.
 
-The dispersion submodel is treated as a gamma family unless the original 
-reponses are gamma, in which case the dispersion submodel is digamma. 
-(Note that the digamma and trigamma functions are required to fit a digamma
-family.) This is exact if the original \acronym{glm} family is \code{gaussian},
-\code{Gamma} or \code{inverse.gaussian}. In other cases it can be 
-justified by the saddle-point approximation to the density of the responses. 
-The results will therefore be close to exact ML or REML when the dispersions 
-are small compared to the means. In all cases the dispersion submodel as prior
-weights 1, and has its own dispersion parameter which is 2.
+   The dispersion submodel is treated as a gamma family unless the original 
+   reponses are gamma, in which case the dispersion submodel is digamma. 
+   This is exact if the original glm family is \code{gaussian},
+   \code{Gamma} or \code{inverse.gaussian}. In other cases it can be 
+   justified by the saddle-point approximation to the density of the responses. 
+   The results will therefore be close to exact ML or REML when the dispersions 
+   are small compared to the means. In all cases the dispersion submodel has prior
+   weights 1, and has its own dispersion parameter which is 2.
 }
+
 \author{Gordon Smyth,
-ported to \R\ by Peter Dunn (\email{pdunn2@usc.edu.au})}
+ported to R by Peter Dunn (\email{pdunn2@usc.edu.au})}
 
 \references{
 Smyth, G. K. (1989). Generalized linear models with varying dispersion. 
 \emph{J. R. Statist. Soc. B}, \bold{51}, 47--60.
+\doi{10.1111/j.2517-6161.1989.tb01747.x}
 
 Smyth, G. K., and Verbyla, A. P. (1999). 
 Adjusted likelihood methods for modelling dispersion in generalized linear models.
 \emph{Environmetrics}, \bold{10}, 696-709.
+\doi{10.1002/(SICI)1099-095X(199911/12)10:6<695::AID-ENV385>3.0.CO;2-M}
+\url{https://gksmyth.github.io/pubs/Ties98-Preprint.pdf}
 
-Verbyla, A. P., and Smyth, G. K. (1998). Double generalized linear models:
-approximate residual maximum likelihood and diagnostics. 
-Research Report, Department of Statistics, University of Adelaide. 
+Smyth, G. K., and Verbyla, A. P. (1999).
+Double generalized linear models: approximate REML and diagnostics.
+In \emph{Statistical Modelling: Proceedings of the 14th International Workshop on Statistical Modelling}, Graz, Austria, July 19-23, 1999, H. Friedl, A. Berghold, G. Kauermann (eds.), Technical University, Graz, Austria, pages 66-80.
+\url{https://gksmyth.github.io/pubs/iwsm99-Preprint.pdf}
 }
 
 \seealso{\code{\link{dglm}}, \code{Digamma family}, \code{Polygamma}}
 
-
 \note{
 The anova method is questionable when applied to an \code{dglm} object with
 \code{method="reml"} (stick to \code{method="ml"}). 
-}
-
-\examples{
-# Continuing the example from  glm, but this time try
-# fitting a Gamma double generalized linear model also.
-clotting <- data.frame(
-      u = c(5,10,15,20,30,40,60,80,100),
-      lot1 = c(118,58,42,35,27,25,21,19,18),
-      lot2 = c(69,35,26,21,18,16,13,12,12))
-         
-# The same example as in  glm: the dispersion is modelled as constant
-out <- dglm(lot1 ~ log(u), ~1, data=clotting, family=Gamma)
-summary(out)
-
-# Try a double glm 
-out2 <- dglm(lot1 ~ log(u), ~u, data=clotting, family=Gamma)
-
-summary(out2)
-anova(out2)
-
-# Summarize the mean model as for a glm
-summary.glm(out2)
-    
-# Summarize the dispersion model as for a glm
-summary(out2$dispersion.fit)
-
-# Examine goodness of fit of dispersion model by plotting residuals
-plot(fitted(out2$dispersion.fit),residuals(out2$dispersion.fit)) 
 }
 
 \keyword{classes}

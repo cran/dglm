@@ -1,0 +1,302 @@
+
+R Under development (unstable) (2023-11-23 r85618 ucrt) -- "Unsuffered Consequences"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(dglm)
+> options(warnPartialMatchArgs=TRUE,warnPartialMatchAttr=TRUE,warnPartialMatchDollar=TRUE,width=120)
+> 
+> set.seed(0); u <- runif(100)
+> 
+> n <- 100
+> y <- rnorm(n)
+> x <- rnorm(n)
+> z <- rnorm(n)
+> 
+> fit <- dglm(y~x,~z,method="ml")
+Warning message:
+In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+> summary(fit)
+
+Call: dglm(formula = y ~ x, dformula = ~z, method = "ml")
+
+Mean Coefficients:
+               Estimate Std. Error    t value  Pr(>|t|)
+(Intercept) -0.07365451 0.08872031 -0.8301877 0.4084505
+x           -0.09533765 0.08522001 -1.1187238 0.2659927
+(Dispersion Parameters for gaussian family estimated as below )
+
+    Scaled Null Deviance: 101.2771 on 99 degrees of freedom
+Scaled Residual Deviance: 99.99999 on 98 degrees of freedom
+
+Dispersion Coefficients:
+               Estimate Std. Error    z value   Pr(>|z|)
+(Intercept) -0.25841298  0.1416823 -1.8238907 0.06816859
+z           -0.09276393  0.1520989 -0.6098922 0.54193325
+(Dispersion parameter for Gamma family taken to be 2 )
+
+    Scaled Null Deviance: 123.011 on 99 degrees of freedom
+Scaled Residual Deviance: 122.6977 on 98 degrees of freedom
+
+Minus Twice the Log-Likelihood: 257.4222 
+Number of Alternating Iterations: 5 
+Warning messages:
+1: In x$coef : partial match of 'coef' to 'coefficients'
+2: In xd$coef : partial match of 'coef' to 'coefficients'
+> fit <- dglm(y~x,~z,method="reml")
+Warning message:
+In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+> summary(fit)
+
+Call: dglm(formula = y ~ x, dformula = ~z, method = "reml")
+
+Mean Coefficients:
+               Estimate Std. Error    t value  Pr(>|t|)
+(Intercept) -0.07348603 0.08871715 -0.8283183 0.4095030
+x           -0.09547360 0.08521748 -1.1203524 0.2653018
+(Dispersion Parameters for gaussian family estimated as below )
+
+    Scaled Null Deviance: 98.96709 on 99 degrees of freedom
+Scaled Residual Deviance: 97.71554 on 98 degrees of freedom
+
+Dispersion Coefficients:
+               Estimate Std. Error    z value  Pr(>|z|)
+(Intercept) -0.23523940  0.1445358 -1.6275509 0.1036202
+z           -0.09388925  0.1554761 -0.6038821 0.5459221
+(Dispersion parameter for Gamma family taken to be 2 )
+
+    Scaled Null Deviance: 122.8569 on 99 degrees of freedom
+Scaled Residual Deviance: 122.5692 on 98 degrees of freedom
+
+Minus Twice the Log-Likelihood: 257.4488 
+Number of Alternating Iterations: 5 
+Warning messages:
+1: In x$coef : partial match of 'coef' to 'coefficients'
+2: In xd$coef : partial match of 'coef' to 'coefficients'
+> anova(fit)
+Analysis of Deviance Table
+
+gaussian double generalized linear model
+
+Response: y
+
+                 DF Seq.Chisq   Seq.P Adj.Chisq   Adj.P
+Mean model        1   0.96164 0.32677   1.16870 0.27967
+Dispersion model  1   0.27429 0.60047   0.27429 0.60047
+Warning messages:
+1: In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+2: In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+3: In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+> 
+> y2 <- y^2
+> fit <- dglm(y2~x,~z,family=Gamma(link="log"),method="ml")
+Warning message:
+In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+> summary(fit)
+
+Call: dglm(formula = y2 ~ x, dformula = ~z, family = Gamma(link = "log"), 
+    method = "ml")
+
+Mean Coefficients:
+               Estimate Std. Error    t value   Pr(>|t|)
+(Intercept) -0.23510547  0.1264333 -1.8595213 0.06595317
+x           -0.07787201  0.1236347 -0.6298555 0.53025489
+(Dispersion Parameters for Gamma family estimated as below )
+
+    Scaled Null Deviance: 128.4689 on 99 degrees of freedom
+Scaled Residual Deviance: 128.0307 on 98 degrees of freedom
+
+Dispersion Coefficients:
+              Estimate Std. Error   z value     Pr(>|z|)
+(Intercept) 0.74222087  0.1164414 6.3742033 1.839165e-10
+z           0.01570531  0.1249692 0.1256735 8.999904e-01
+(Dispersion parameter for Digamma family taken to be 2 )
+
+    Scaled Null Deviance: 158.2718 on 99 degrees of freedom
+Scaled Residual Deviance: 161.8657 on 98 degrees of freedom
+
+Minus Twice the Log-Likelihood: 100.1187 
+Number of Alternating Iterations: 9 
+Warning messages:
+1: In x$coef : partial match of 'coef' to 'coefficients'
+2: In xd$coef : partial match of 'coef' to 'coefficients'
+> fit <- dglm(y2~x,~z,family=Gamma(link="log"),method="reml")
+Warning message:
+In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+> summary(fit)
+
+Call: dglm(formula = y2 ~ x, dformula = ~z, family = Gamma(link = "log"), 
+    method = "reml")
+
+Mean Coefficients:
+               Estimate Std. Error    t value   Pr(>|t|)
+(Intercept) -0.23496753  0.1264214 -1.8586062 0.06608415
+x           -0.07774942  0.1236169 -0.6289545 0.53084220
+(Dispersion Parameters for Gamma family estimated as below )
+
+    Scaled Null Deviance: 127.1236 on 99 degrees of freedom
+Scaled Residual Deviance: 126.6909 on 98 degrees of freedom
+
+Dispersion Coefficients:
+              Estimate Std. Error   z value     Pr(>|z|)
+(Intercept) 0.75259599  0.1179156 6.3824985 1.742217e-10
+z           0.01827825  0.1266276 0.1443465 8.852269e-01
+(Dispersion parameter for Digamma family taken to be 2 )
+
+    Scaled Null Deviance: 158.262 on 99 degrees of freedom
+Scaled Residual Deviance: 161.5447 on 98 degrees of freedom
+
+Minus Twice the Log-Likelihood: 100.1277 
+Number of Alternating Iterations: 8 
+Warning messages:
+1: In x$coef : partial match of 'coef' to 'coefficients'
+2: In xd$coef : partial match of 'coef' to 'coefficients'
+> 
+> # Continuing the example from glm, but this time try
+> # fitting a Gamma double generalized linear model also.
+> clotting <- data.frame(
++       u = c(5,10,15,20,30,40,60,80,100),
++       lot1 = c(118,58,42,35,27,25,21,19,18),
++       lot2 = c(69,35,26,21,18,16,13,12,12))
+>          
+> # The same example as in  glm: the dispersion is modelled as constant
+> # However, dglm uses  ml  not  reml,  so the results are slightly different:
+> out <- dglm(lot1 ~ log(u), ~1, data=clotting, family=Gamma)
+Warning message:
+In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+> summary(out)
+
+Call: dglm(formula = lot1 ~ log(u), dformula = ~1, family = Gamma, 
+    data = clotting)
+
+Mean Coefficients:
+               Estimate   Std. Error   t value     Pr(>|t|)
+(Intercept) -0.01655438 0.0009275491 -17.84744 4.279230e-07
+log(u)       0.01534311 0.0004149596  36.97496 2.751191e-09
+(Dispersion Parameters for Gamma family estimated as below )
+
+    Scaled Null Deviance: 1890.363 on 8 degrees of freedom
+Scaled Residual Deviance: 9.002787 on 7 degrees of freedom
+
+Dispersion Coefficients:
+             Estimate Std. Error   z value     Pr(>|z|)
+(Intercept) -6.288103  0.4712586 -13.34321 1.297468e-40
+(Dispersion parameter for Digamma family taken to be 2 )
+
+    Scaled Null Deviance: 8.90448 on 8 degrees of freedom
+Scaled Residual Deviance: 8.90448 on 8 degrees of freedom
+
+Minus Twice the Log-Likelihood: 31.98992 
+Number of Alternating Iterations: 4 
+Warning messages:
+1: In x$coef : partial match of 'coef' to 'coefficients'
+2: In xd$coef : partial match of 'coef' to 'coefficients'
+> 
+> # Try a double glm 
+> out2 <- dglm(lot1 ~ log(u), ~u, data=clotting, family=Gamma)
+Warning message:
+In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+> 
+> summary(out2)
+
+Call: dglm(formula = lot1 ~ log(u), dformula = ~u, family = Gamma, 
+    data = clotting)
+
+Mean Coefficients:
+               Estimate   Std. Error   t value     Pr(>|t|)
+(Intercept) -0.01784797 0.0010062108 -17.73780 4.464149e-07
+log(u)       0.01596262 0.0002301215  69.36604 3.402379e-11
+(Dispersion Parameters for Gamma family estimated as below )
+
+    Scaled Null Deviance: 2313.573 on 8 degrees of freedom
+Scaled Residual Deviance: 9.003391 on 7 degrees of freedom
+
+Dispersion Coefficients:
+               Estimate Std. Error   z value     Pr(>|z|)
+(Intercept) -4.59256962 0.76357166 -6.014589 1.803438e-09
+u           -0.06966577 0.01502817 -4.635680 3.557663e-06
+(Dispersion parameter for Digamma family taken to be 2 )
+
+    Scaled Null Deviance: 16.75853 on 8 degrees of freedom
+Scaled Residual Deviance: 4.414477 on 7 degrees of freedom
+
+Minus Twice the Log-Likelihood: 22.17126 
+Number of Alternating Iterations: 5 
+Warning messages:
+1: In x$coef : partial match of 'coef' to 'coefficients'
+2: In xd$coef : partial match of 'coef' to 'coefficients'
+> anova(out2)
+Analysis of Deviance Table
+
+Gamma double generalized linear model
+
+Response: lot1
+
+                 DF Seq.Chisq     Seq.P Adj.Chisq     Adj.P
+Mean model        1    48.686 0.0000000    47.403 0.0000000
+Dispersion model  1     9.819 0.0017275     9.819 0.0017275
+Warning messages:
+1: In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+2: In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+3: In dfamily$dev.resid : partial match of 'dev.resid' to 'dev.resids'
+> 
+> # Summarize the mean model as for a glm
+> summary.glm(out2)
+
+Call:
+dglm(formula = lot1 ~ log(u), dformula = ~u, family = Gamma, 
+    data = clotting)
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.0178480  0.0010062  -17.74 4.46e-07 ***
+log(u)       0.0159626  0.0002301   69.37 3.40e-11 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for Gamma family taken to be 1.307633)
+
+    Null deviance: 2313.5733  on 8  degrees of freedom
+Residual deviance:    9.0034  on 7  degrees of freedom
+AIC: NA
+
+Number of Fisher Scoring iterations: 5
+
+>     
+> # Summarize the dispersion model as for a glm
+> summary(out2$dispersion.fit)
+
+Call:
+dglm(formula = ~u, family = Digamma(link = "log"), data = clotting)
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -4.59257    0.53790  -8.538    6e-05 ***
+u           -0.06967    0.01059  -6.581  0.00031 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for Digamma family taken to be 0.9925192)
+
+    Null deviance: 16.7585  on 7  degrees of freedom
+Residual deviance:  4.4145  on 7  degrees of freedom
+AIC: NA
+
+Number of Fisher Scoring iterations: 5
+
+> 
+> proc.time()
+   user  system elapsed 
+   0.15    0.14    0.28 

@@ -1,55 +1,45 @@
 library(dglm)
+options(warnPartialMatchArgs=TRUE,warnPartialMatchAttr=TRUE,warnPartialMatchDollar=TRUE,width=120)
 
-n <- 1000
+set.seed(0); u <- runif(100)
 
-TestFunc <- function(mean.formula, var.formula, model.df) {
-  
-  my.glm <- glm(formula = mean.formula,
-                data = model.df)
-  
-  x <- predict(my.glm, se.fit = TRUE)
-  
-  my.dglm <- dglm(formula = mean.formula,
-                  dformula = var.formula,
-                  data = model.df)
-  
-  y <- predict(my.dglm, se.fit = TRUE)
-  
-  z <- predict(my.dglm$dispersion.fit, se.fit = TRUE)
-  
-  return(list(glm = x, dglm.mean = y, dglm.var = z))
-}
+n <- 100
+y <- rnorm(n)
+x <- rnorm(n)
+z <- rnorm(n)
 
+fit <- dglm(y~x,~z,method="ml")
+summary(fit)
+fit <- dglm(y~x,~z,method="reml")
+summary(fit)
+anova(fit)
 
-a <- runif(n)
-b <- runif(n)
-c <- runif(n)
-d <- runif(n)
+y2 <- y^2
+fit <- dglm(y2~x,~z,family=Gamma(link="log"),method="ml")
+summary(fit)
+fit <- dglm(y2~x,~z,family=Gamma(link="log"),method="reml")
+summary(fit)
 
-betas <- c(runif(n = 3, min = -10, max = 10), runif(n = 3, min = -1, max = 1))
+# Continuing the example from glm, but this time try
+# fitting a Gamma double generalized linear model also.
+clotting <- data.frame(
+      u = c(5,10,15,20,30,40,60,80,100),
+      lot1 = c(118,58,42,35,27,25,21,19,18),
+      lot2 = c(69,35,26,21,18,16,13,12,12))
+         
+# The same example as in  glm: the dispersion is modelled as constant
+# However, dglm uses  ml  not  reml,  so the results are slightly different:
+out <- dglm(lot1 ~ log(u), ~1, data=clotting, family=Gamma)
+summary(out)
 
-mu <- betas[1] + a*betas[2] + b*betas[3]
-var <- exp(betas[4] + c*betas[5] + d*betas[6])
-y <- mu + rnorm(n = n, sd = sd(var))
+# Try a double glm 
+out2 <- dglm(lot1 ~ log(u), ~u, data=clotting, family=Gamma)
 
-my.df <- data.frame(y, a, b, c, d)
+summary(out2)
+anova(out2)
 
-mean.formula <- as.formula('y ~ a + b')
-var.formula <- as.formula('~ c + d')
-
-l <- TestFunc(mean.formula = mean.formula, var.formula = var.formula, model.df = my.df)
-
-par(mfrow = c(2, 2))
-plot(mu, l$dglm.mean$fit); abline(0, 1)
-legend(x = 'topleft', legend = paste(c('mu:', 'a', 'b'), round(betas[1:3], 1)), bty = 'n')
-plot(var, exp(l$dglm.var$fit/l$dglm.var$residual.scale)); abline(0, 1)
-legend(x = 'topleft', legend = paste(c('mu:', 'c:', 'd:'), round(betas[4:6], 2)))
-
-my.dglm <- dglm(formula = mean.formula, dformula = var.formula, data = my.df, method = 'reml')
-
-plot(mu, predict(my.dglm))
-plot(sqrt(var), predict(my.dglm$dispersion.fit))
-
-
-anova(my.dglm)
-
+# Summarize the mean model as for a glm
+summary.glm(out2)
+    
+# Summarize the dispersion model as for a glm
+summary(out2$dispersion.fit)

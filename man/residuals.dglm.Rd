@@ -8,8 +8,8 @@
 }
 
 \arguments{
-\item{object}{a \code{"dglm"} object}
-\item{...}{any other parameters are passed to \code{residuals.glm}}
+\item{object}{an object of class \code{"dglm"}.}
+\item{...}{any other parameters are passed to \code{residuals.glm}.}
 }
 
 \value{

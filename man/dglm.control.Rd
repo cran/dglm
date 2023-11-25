@@ -29,7 +29,7 @@ outer iteration. Hence, 'options(digits = *)' can be used to
 increase the precision; see the example for \code{\link{glm.control}}.}
 
 \author{Gordon Smyth,
-ported to \R\ by Peter Dunn (\email{pdunn2@usc.edu.au})
+ported to R by Peter Dunn (\email{pdunn2@usc.edu.au})
 }
 \references{
 Smyth, G. K. (1989). Generalized linear models with varying dispersion. 
@@ -45,7 +45,6 @@ Research Report, Department of Statistics, University of Adelaide.
 }
 
 \seealso{\code{\link{dglm-class}}, \code{\link{dglm}}}
-
 
 \examples{
 ### A variation on  example(dglm) :
@@ -71,6 +70,7 @@ out2 <- dglm(lot1 ~ log(u), ~u, data=clotting, family=Gamma,
 summary(out2)
 options(oo)
 } 
+
 \keyword{optimize}
 \keyword{models}
 
